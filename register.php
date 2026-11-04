@@ -15,24 +15,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password   = $_POST['password'];
     $confirm_pw = $_POST['confirm_password'];
 
-    // 1. Validation checks
     if (empty($id_number) || empty($first_name) || empty($last_name) || empty($email) || empty($password)) {
         $error = "Please fill in all required fields.";
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $error = "Please enter a valid email address."; // Fixed stray quote
+        $error = "Please enter a valid email address.";
     } elseif ($password !== $confirm_pw) {
         $error = "Passwords do not match.";
     } elseif (strlen($password) < 6) {
-        $error = "Password must be at least 6 characters long."; // Fixed missing semicolon
+        $error = "Password must be at least 6 characters long.";
     } else {
-        // 2. Duplicate Check
         $checkStmt = $pdo->prepare("SELECT user_id FROM users WHERE id_number = ? OR email = ?");
         $checkStmt->execute([$id_number, $email]);
 
         if ($checkStmt->fetch()) {
             $error = "That Student ID Number or Email is already registered.";
         } else {
-            // 3. Hash Password & Insert
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
             $sql = "INSERT INTO users (
@@ -53,7 +50,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if ($success_status) {
                 $success = "Registration successful! You may now proceed to log in.";
-                // Clear sticky values upon successful registration
                 $id_number = $first_name = $last_name = $email = $program = $contact = '';
             } else {
                 $error = "Something went wrong while saving your account. Please try again.";
@@ -68,8 +64,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Registration - CCC MindHub</title>
-    
-    <!-- Link to the separated external stylesheet -->
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
@@ -80,14 +74,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <p>Student Counseling & Online Appointment System</p>
     </div>
 
-    <!-- Error Box -->
     <?php if (!empty($error)): ?>
         <div class="alert-error">
             <?= htmlspecialchars($error) ?>
         </div>
     <?php endif; ?>
 
-    <!-- Success Box -->
     <?php if (!empty($success)): ?>
         <div class="alert-success">
             <?= htmlspecialchars($success) ?><br>

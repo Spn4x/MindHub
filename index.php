@@ -1,22 +1,91 @@
 <?php
-$host = '127.0.0.1';
-$db   = 'dev_db';
-$user = 'devuser';
-$pass = 'devuser';
+session_start();
+require_once __DIR__ . '/config/db.php';
 
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8mb4", $user, $pass, [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    ]);
-
-    // Ensure the table exists
-    $pdo->exec("CREATE TABLE IF NOT EXISTS students (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        name VARCHAR(100) NOT NULL,
-        course VARCHAR(100) NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )");
-} catch (PDOException $e) {
-    die("Database Connection Error: " . $e->getMessage());
+if (isset($_SESSION['user_id'])) {
+    if ($_SESSION['role'] === 'student') {
+        header("Location: students/dashboard.php");
+    } else {
+        header("Location: counselors/dashboard.php");
+    }
+    exit();
 }
+
+$error = '';
+$email = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email    = trim($_POST['email']);
+    $password = $_POST['password'];
+
+    if (empty($email) || empty($password)) {
+        $error = "Please enter both your email and password.";
+    } else {
+        $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
+        $stmt->execute([$email]);
+        $user = $stmt->fetch();
+
+        if ($user && password_verify($password, $user['password_hash'])) {
+            session_regenerate_id(true);
+
+            $_SESSION['user_id']   = $user['user_id'];
+            $_SESSION['id_number'] = $user['id_number'];
+            $_SESSION['name']      = $user['first_name'] . ' ' . $user['last_name'];
+            $_SESSION['role']      = $user['role'];
+
+            if ($user['role'] === 'student') {
+                header("Location: students/dashboard.php");
+            } else {
+                header("Location: counselors/dashboard.php");
+            }
+            exit();
+        } else {
+            $error = "Invalid email address or password.";
+        }
+    }
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - CCC MindHub</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<div class="register-card">
+    <div class="header">
+        <h2>CCC MindHub</h2>
+        <p>Student Counseling & Online Appointment System</p>
+    </div>
+
+    <?php if (!empty($error)): ?>
+        <div class="alert-error">
+            <?= htmlspecialchars($error) ?>
+        </div>
+    <?php endif; ?>
+
+    <form method="POST" action="index.php">
+        <div class="form-group">
+            <label>CCC Email Address:</label>
+            <input type="email" name="email" placeholder="e.g., student@ccc.edu.ph" 
+                   value="<?= htmlspecialchars($email) ?>" required autofocus>
+        </div>
+
+        <div class="form-group">
+            <label>Password:</label>
+            <input type="password" name="password" placeholder="Enter your password" required>
+        </div>
+
+        <button type="submit" class="btn-submit">Log In</button>
+    </form>
+
+    <div class="footer-link">
+        Don't have an account yet? <a href="register.php">Register here</a>
+    </div>
+</div>
+
+</body>
+</html>
