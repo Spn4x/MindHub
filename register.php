@@ -73,14 +73,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Registration - CCC MindHub</title>
+    <title>Student Registration - MindHub</title>
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 
+<img src="assets/images/poster.jpg" alt="MindHub Poster" class="poster-img">
+
 <div class="register-card">
     <div class="header">
-        <h2>CCC MindHub</h2>
+        <h2>MindHub</h2>
         <p>Student Counseling & Online Appointment System</p>
     </div>
 
