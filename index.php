@@ -17,13 +17,13 @@ if (isset($_SESSION['user_id'])) {
 
 $error = '';
 $email = '';
+$success = '';
 
-if(isset($_GET['registered'])) {
-    $success = "Registraton Successful, You may now log in.";
+if (isset($_GET['registered'])) {
+    $success = "Registration successful! You may now log in.";
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
     if (
         !isset($_POST['csrf_token']) ||
         !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])
@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($email) || empty($password)) {
         $error = "Please enter both your email and password.";
     } else {
-        $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
+        $stmt = $pdo->prepare("select * from users where email = ?");
         $stmt->execute([$email]);
         $user = $stmt->fetch();
 
@@ -60,22 +60,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - MindHub</title>
+    <title>Login - CCC MindHub</title>
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 
-
-
 <div class="register-card">
     <div class="header">
-        <h2>MindHub</h2>
-        <p> Student Counseling & Online Appointment System </p>
+        <h2>CCC MindHub</h2>
+        <p>Student Counseling & Online Appointment System</p>
     </div>
 
     <?php if (!empty($error)): ?>
@@ -84,7 +83,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     <?php endif; ?>
 
+    <?php if (!empty($success)): ?>
+        <div class="alert-success">
+            <?= htmlspecialchars($success) ?>
+        </div>
+    <?php endif; ?>
+
     <form method="POST" action="index.php">
+        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']); ?>">
+        
         <div class="form-group">
             <label>CCC Email Address:</label>
             <input type="email" name="email" placeholder="e.g., student@ccc.edu.ph" 
