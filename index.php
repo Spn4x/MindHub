@@ -2,6 +2,10 @@
 session_start();
 require_once __DIR__ . '/config/db.php';
 
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
 if (isset($_SESSION['user_id'])) {
     if ($_SESSION['role'] === 'student') {
         header("Location: students/dashboard.php");
@@ -14,7 +18,19 @@ if (isset($_SESSION['user_id'])) {
 $error = '';
 $email = '';
 
+if(isset($_GET['registered'])) {
+    $success = "Registraton Successful, You may now log in.";
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    if (
+        !isset($_POST['csrf_token']) ||
+        !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])
+    ) {
+        die("Invalid Request.");
+    }
+
     $email    = trim($_POST['email']);
     $password = $_POST['password'];
 
@@ -67,7 +83,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     <?php endif; ?>
 
+    <?php if(!empty($success)): ?>
+        <div class="alert-success">
+    <?=htmlspecialchars($success) ?>
+    </div>
+    <?php endif; ?>
+
     <form method="POST" action="index.php">
+        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']); ?>">
         <div class="form-group">
             <label>CCC Email Address:</label>
             <input type="email" name="email" placeholder="e.g., student@ccc.edu.ph" 

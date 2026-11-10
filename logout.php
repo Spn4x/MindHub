@@ -14,7 +14,7 @@ if (ini_get("session.use_cookies")) {
         $params['path'],
         $params['domain'],
         $params['secure'],
-        $params['httpony']
+        $params['httponly']
     );
 }
 

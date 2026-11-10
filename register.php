@@ -2,10 +2,22 @@
 session_start();
 require_once 'config/db.php';
 
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
 $error = '';
 $success = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+   if (
+        !isset($_POST['csrf_token']) ||
+        !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])
+    ) {
+        die("Invalid Request.");
+    }
+
     $id_number  = trim($_POST['id_number']);
     $first_name = trim($_POST['first_name']);
     $last_name  = trim($_POST['last_name']);
@@ -49,8 +61,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]);
 
             if ($success_status) {
-                $success = "Registration successful! You may now proceed to log in.";
-                $id_number = $first_name = $last_name = $email = $program = $contact = '';
+                header("Location: index.php?registered=1");
+                exit();
             } else {
                 $error = "Something went wrong while saving your account. Please try again.";
             }
@@ -88,6 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php endif; ?>
 
     <form method="POST" action="register.php">
+        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']); ?>">
         <div class="form-group">
             <label>Student ID Number:*</label>
             <input type="text" name="id_number" placeholder="e.g., 2024-10023" 
