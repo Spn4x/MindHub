@@ -1,53 +1,131 @@
 /* assets/css/style.css */
 
+
+/* For the entire page */
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden; /* Disables all scrolling */
+}
+
+/* Chrome, Safari, and Opera */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+}
+
+
+
+
 /* Global Reset & Base Setup */
 * {
     box-sizing: border-box;
-    margin: 0;
-    padding: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-        background: linear-gradient(rgba(15, 23, 42, 0.70), rgba(15, 23, 42, 0.70)), 
-                url('../images/ccc_backrop.png') no-repeat center center fixed;
-    background-size: cover;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background: #E5E0D8;
     min-height: 100vh;
-    padding: 20px 0;
+    display: flex;
+    justify-content: center; /* Centers both columns horizontally */
+    align-items: center;     /* Centers vertically */
+    gap: 30px;               /* Clean spacing between poster and card */
+    padding: 20px;
 }
+
+/* Image container */
+.poster-img {
+    margin-left: -13%;
+    display: block;
+    width: 600px;            /* Fixed crisp width */
+    max-width: 100%;
+    height: 550px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+
 
 /* Card Container */
 .register-card {
-    background: #ffffff;
     width: 100%;
-    max-width: 480px;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    max-width: 420px;        /* Keeps the form card compact and tidy */
+    background: transparent; /* Or #ffffff if you want a white card background */
 }
 
-.header {
-    text-align: center;
-    margin-bottom: 25px;
-}
 
-.header h2 {
-    color: #1e3a8a; /* CCC Navy Blue */
-    font-size: 24px;
+.header h2 {    
+    text-align: left;
+    color: #809671; /* CCC Navy Blue */
+    font-size: 32px;
     margin-bottom: 5px;
 }
 
 .header p {
-    color: #64748b;
+    text-align: left;
+    color: black;
     font-size: 14px;
+}
+
+
+/* ========================================================
+   MULTI-STEP FORM STYLES
+   ======================================================== */
+.step-section {
+    display: none; /* Hidden by default */
+}
+
+.step-section.active {
+    display: block; /* Visible step */
+    
+
+}
+
+
+.step-error {
+    
+
+    background-color: #fee2e2;
+    color: #991b1b;
+    border-left: 3px solid #ef4444;
+    padding: 10px 12px;
+    font-size: 13px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    display: none;
+}
+
+.btn-group {
+    display: flex;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.btn-back {
+    flex: 1;
+    background-color: #64748b;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-back:hover {
+    background-color: #475569;
+}
+
+.btn-group .btn-submit {
+    flex: 2;
+    margin-top: 0;
 }
 
 /* Form Controls */
 .form-group {
-    margin-bottom: 16px;
+    margin-bottom: 1px; 
 }
 
 label {
@@ -55,29 +133,30 @@ label {
     font-weight: 600;
     font-size: 13px;
     color: #334155;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
 }
 
 input[type="text"],
 input[type="email"],
 input[type="password"] {
     width: 100%;
-    padding: 10px 14px;
+    padding: 6px 10px;
     font-size: 14px;
     border: 1px solid #cbd5e1;
     border-radius: 6px;
     outline: none;
     transition: border-color 0.2s;
+    
 }
 
 input:focus {
-    border-color: #2563eb;
+    border-color: blue;
 }
 
 /* Submit Button */
 .btn-submit {
     width: 100%;
-    background-color: #2563eb;
+    background-color: #809671;
     color: #ffffff;
     font-size: 15px;
     font-weight: 600;
@@ -90,7 +169,7 @@ input:focus {
 }
 
 .btn-submit:hover {
-    background-color: #1d4ed8;
+    background-color: #275f02;
 }
 
 /* Alerts */
@@ -131,7 +210,9 @@ input:focus {
     text-decoration: underline;
 }
 
-
+/* ========================================================
+   DASHBOARD STYLES
+   ======================================================== */
 body.dashboard-body {
     background-color: #f8fafc;
     display: block;
@@ -230,7 +311,6 @@ body.dashboard-body {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  
 }
 
 .stat-card h3 {

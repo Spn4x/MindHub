@@ -60,21 +60,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - CCC MindHub</title>
+    <title>Login - MindHub</title>
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 
+
+
 <div class="register-card">
     <div class="header">
-        <h2>CCC MindHub</h2>
-        <p>Student Counseling & Online Appointment System</p>
+        <h2>MindHub</h2>
+        <p> Student Counseling & Online Appointment System </p>
     </div>
 
     <?php if (!empty($error)): ?>
@@ -83,14 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     <?php endif; ?>
 
-    <?php if(!empty($success)): ?>
-        <div class="alert-success">
-    <?=htmlspecialchars($success) ?>
-    </div>
-    <?php endif; ?>
-
     <form method="POST" action="index.php">
-        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']); ?>">
         <div class="form-group">
             <label>CCC Email Address:</label>
             <input type="email" name="email" placeholder="e.g., student@ccc.edu.ph" 
