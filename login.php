@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
    
 <a href="#" class="top-left-logo">
-    <img src="assets/images/logo.png" alt=" Logo">
+    <img src="assets/images/logos.png" alt=" Logo">
 </a>
 
 <div class="register-card">
