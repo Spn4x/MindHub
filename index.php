@@ -154,7 +154,7 @@ if (isset($_SESSION['user_id'])) {
         </p>
 
         <div class="hero-buttons">
-            <a href="login.php" class="btn-hero-primary">Log In to Portal &rarr;</a>
+            <a href="login.php" class="btn-hero-primary">Log In to Portal</a>
             <a href="register.php" class="btn-hero-secondary">Student Registration</a>
         </div>
     </div>

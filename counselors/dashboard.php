@@ -340,6 +340,10 @@ $followupWatchlist = $watchlistStmt->fetchAll();
                         </div>
                     <?php else: ?>
                         <?php foreach ($upcoming as $item): ?>
+                            <?php
+                                $counselor_link = $item['meeting_link'];
+                                $clean_counselor_url = (strpos($counselor_link, 'http://') === 0 || strpos($counselor_link, 'https://') === 0) ? $counselor_link : 'https://' . $counselor_link;
+                            ?>
                             <div class="schedule-row">
                                 <div>
                                     <div class="schedule-date"><?= date('M d, Y', strtotime($item['appointment_date'])) ?></div>
@@ -347,7 +351,7 @@ $followupWatchlist = $watchlistStmt->fetchAll();
                                     <div class="schedule-student"><?= htmlspecialchars($item['first_name'] . ' ' . $item['last_name']) ?></div>
                                     <?php if (!empty($item['meeting_link'])): ?>
                                         <div style="margin-top: 4px; font-size: 11px;">
-                                            <a href="<?= htmlspecialchars($item['meeting_link']) ?>" target="_blank" style="color: var(--palette-blue); text-decoration: underline;">Open Meeting Link</a>
+                                            <a href="<?= htmlspecialchars($clean_counselor_url) ?>" target="_blank" style="color: var(--palette-blue); text-decoration: underline;">Open Meeting Link</a>
                                         </div>
                                     <?php endif; ?>
                                 </div>

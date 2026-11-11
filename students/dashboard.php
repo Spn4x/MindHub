@@ -159,7 +159,11 @@ $next_session = !empty($upcoming_approved) ? reset($upcoming_approved) : null;
         </div>
 
         <?php if ($next_session): ?>
-            <?php $reminderConcernClass = 'concern-' . str_replace(' ', '', $next_session['nature_of_concern']); ?>
+            <?php 
+                $reminderConcernClass = 'concern-' . str_replace(' ', '', $next_session['nature_of_concern']); 
+                $spotlight_link = $next_session['meeting_link'];
+                $clean_spotlight_url = (strpos($spotlight_link, 'http://') === 0 || strpos($spotlight_link, 'https://') === 0) ? $spotlight_link : 'https://' . $spotlight_link;
+            ?>
             <div class="spotlight-block">
                 <div class="spotlight-title">Upcoming Consultation Reminder</div>
                 <div class="spotlight-details">
@@ -170,7 +174,7 @@ $next_session = !empty($upcoming_approved) ? reset($upcoming_approved) : null;
                     Concern: <span class="concern-text <?= $reminderConcernClass ?>"><?= htmlspecialchars($next_session['nature_of_concern']) ?></span> &bull; 
                     Mode: <?= htmlspecialchars($next_session['consultation_mode']) ?>
                     <?php if ($next_session['consultation_mode'] === 'Online' && !empty($next_session['meeting_link'])): ?>
-                        &bull; <a href="<?= htmlspecialchars($next_session['meeting_link']) ?>" target="_blank" style="color: var(--palette-blue); font-weight: 600; text-decoration: underline;">Open Meeting Room</a>
+                        &bull; <a href="<?= htmlspecialchars($clean_spotlight_url) ?>" target="_blank" style="color: var(--palette-blue); font-weight: 600; text-decoration: underline;">Open Meeting Room</a>
                     <?php endif; ?>
                 </div>
             </div>
@@ -216,8 +220,12 @@ $next_session = !empty($upcoming_approved) ? reset($upcoming_approved) : null;
                                 <td>
                                     <?= htmlspecialchars($row['consultation_mode']) ?>
                                     <?php if ($row['consultation_mode'] === 'Online' && !empty($row['meeting_link']) && $row['status'] === 'approved'): ?>
+                                        <?php 
+                                            $link = $row['meeting_link'];
+                                            $clean_url = (strpos($link, 'http://') === 0 || strpos($link, 'https://') === 0) ? $link : 'https://' . $link;
+                                        ?>
                                         <div style="margin-top: 3px;">
-                                            <a href="<?= htmlspecialchars($row['meeting_link']) ?>" target="_blank" style="font-size: 11px; color: var(--palette-blue); font-weight: 600; text-decoration: underline;">Open Meeting Room</a>
+                                            <a href="<?= htmlspecialchars($clean_url) ?>" target="_blank" style="font-size: 11px; color: var(--palette-blue); font-weight: 600; text-decoration: underline;">Open Meeting Room</a>
                                         </div>
                                     <?php endif; ?>
                                 </td>
