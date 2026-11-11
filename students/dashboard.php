@@ -2,7 +2,7 @@
 session_start();
 
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'student') {
-    header("Location: ../index.php");
+    header("Location: ../login.php");
     exit();
 }
 
@@ -10,7 +10,7 @@ require_once __DIR__ . '/../config/db.php';
 
 $student_id = $_SESSION['user_id'];
 
-$sql = "SELECT 
+$sql = "select 
             a.appointment_id,
             a.appointment_date,
             a.start_time,
@@ -18,13 +18,14 @@ $sql = "SELECT
             a.nature_of_concern,
             a.consultation_mode,
             a.status,
+            a.meeting_link,
             a.created_at,
-            u.first_name AS counselor_fname,
-            u.last_name AS counselor_lname
-        FROM appointments a
-        LEFT JOIN users u ON a.counselor_id = u.user_id
-        WHERE a.student_id = ?
-        ORDER BY a.appointment_date DESC, a.start_time DESC";
+            u.first_name as counselor_fname,
+            u.last_name as counselor_lname
+        from appointments a
+        left join users u on a.counselor_id = u.user_id
+        where a.student_id = ?
+        order by a.appointment_date desc, a.start_time desc";
 
 $stmt = $pdo->prepare($sql);
 $stmt->execute([$student_id]);
@@ -51,12 +52,11 @@ foreach ($appointments as $apt) {
 </head>
 <body class="dashboard-body">
 
-<a href="#" class="top-left-logo">
-    <img src="../assets/images/logo.png" alt=" Logo">
-</a>
-
     <nav class="navbar">
-        <div class="brand"> MindHub</div>
+        <a href="dashboard.php" class="brand">
+            <img src="../assets/images/logo.png" alt="MindHub Logo">
+            <span>MindHub</span>
+        </a>
         <div class="user-info">
             <span>Welcome, <strong><?= htmlspecialchars($_SESSION['name']) ?></strong> (<?= htmlspecialchars($_SESSION['id_number']) ?>)</span>
             <a href="../logout.php" class="btn-logout">Logout</a>
@@ -71,8 +71,10 @@ foreach ($appointments as $apt) {
                 <p>Track your guidance appointments and consultations privately.</p>
             </div>
         
-            <a href="resources.php" class="btn-look">Self-Help Hub</a>
-            <a href="book.php" class="btn-book">+ Book New Appointment</a>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <a href="resources.php" class="btn-look">Self-Help Hub</a>
+                <a href="book.php" class="btn-book">+ Book New Appointment</a>
+            </div>
         </div>
 
         <div class="stats-grid">
@@ -120,7 +122,12 @@ foreach ($appointments as $apt) {
                                 <td><?= date('M d, Y', strtotime($row['appointment_date'])) ?></td>
                                 <td><?= date('h:i A', strtotime($row['start_time'])) ?></td>
                                 <td><?= htmlspecialchars($row['nature_of_concern']) ?></td>
-                                <td><?= htmlspecialchars($row['consultation_mode']) ?></td>
+                                <td>
+                                    <?= htmlspecialchars($row['consultation_mode']) ?>
+                                    <?php if ($row['consultation_mode'] === 'Online' && !empty($row['meeting_link']) && $row['status'] === 'approved'): ?>
+                                        <br><a href="<?= htmlspecialchars($row['meeting_link']) ?>" target="_blank" style="font-size: 11px; color: #2563eb; font-weight: 600; text-decoration: underline;">🔗 Join Meeting</a>
+                                    <?php endif; ?>
+                                </td>
                                 <td>
                                     <?php if ($row['counselor_fname']): ?>
                                         <?= htmlspecialchars($row['counselor_fname'] . ' ' . $row['counselor_lname']) ?>

@@ -6,7 +6,6 @@ $error = '';
 $success = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    
     $id_number  = trim($_POST['id_number']);
     $first_name = trim($_POST['first_name']);
     $last_name  = trim($_POST['last_name']);
@@ -26,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (strlen($password) < 6) {
         $error = "Password must be at least 6 characters long.";
     } else {
-        $checkStmt = $pdo->prepare("SELECT user_id FROM users WHERE id_number = ? OR email = ?");
+        $checkStmt = $pdo->prepare("select user_id from users where id_number = ? or email = ?");
         $checkStmt->execute([$id_number, $email]);
 
         if ($checkStmt->fetch()) {
@@ -34,9 +33,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-            $sql = "INSERT INTO users (
+            $sql = "insert into users (
                         id_number, first_name, last_name, email, password_hash, role, department_or_program, contact_number
-                    ) VALUES (?, ?, ?, ?, ?, 'student', ?, ?)";
+                    ) values (?, ?, ?, ?, ?, 'student', ?, ?)";
 
             $insertStmt = $pdo->prepare($sql);
 
@@ -67,110 +66,111 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Registration - MindHub</title>
     <link rel="stylesheet" href="assets/css/style.css">
-
- <style>
-        html, body {
-            margin: 0;
-            height: 100%;
-            overflow: hidden;
-        }
-    </style>
-
-
 </head>
-<body>
+<body class="auth-page">
 
+<div class="auth-wrapper">
 
-<img class="poster-img" src="assets/images/post.jpg" alt="poster">
-
-<div class="register-card">
-    <div class="header">
-        <h2>MindHub</h2>
-        <p>Student Counseling & Online Appointment System</p>
+    <div class="auth-poster-side">
+        <img class="poster-hero" src="assets/images/post.jpg" alt="MindHub Guidance Poster">
     </div>
 
-    <?php if (!empty($error)): ?>
-        <div class="alert-error">
-            <?= htmlspecialchars($error) ?>
-        </div>
-    <?php endif; ?>
-
-    <?php if (!empty($success)): ?>
-        <div class="alert-success">
-            <?= htmlspecialchars($success) ?><br>
-            <a href="login.php" style="color: #166534; font-weight: bold; text-decoration: underline;">Click here to log in now</a>
-        </div>
-    <?php endif; ?>
-
-    
-
-    <form method="POST" action="register.php" id="registrationForm">
-        <!-- GROUP 1: Personal Details -->
-        <div class="step-section active" id="group-1">
-
-            <div class="form-group">
-                <label>Student ID Number:*</label>
-                <input type="text" id="id_number" name="id_number" placeholder="Enter your Student ID" 
-                       value="<?= htmlspecialchars($id_number ?? '') ?>" required>
-            </div>
-
-            <div class="form-group">
-                <label>First Name:*</label>
-                <input type="text" id="first_name" name="first_name" placeholder="Enter Your Name" 
-                       value="<?= htmlspecialchars($first_name ?? '') ?>" required>
-            </div>
-
-            <div class="form-group">
-                <label>Last Name:*</label>
-                <input type="text" id="last_name" name="last_name" placeholder="Enter Your Last Name" 
-                       value="<?= htmlspecialchars($last_name ?? '') ?>" required>
-            </div>
-
-            <div class="form-group">
-                <label>Degree Program / Course:*</label>
-                <input type="text" id="department_or_program" name="department_or_program" placeholder="e.g., BSIT, BSED, BSBA" 
-                       value="<?= htmlspecialchars($program ?? '') ?>" required>
-            </div>
-
-            <div class="form-group">
-                <label>Contact Number (Optional):</label>
-                <input type="text" id="contact_number" name="contact_number" placeholder="e.g., 09123456789" 
-                       value="<?= htmlspecialchars($contact ?? '') ?>">
-            </div>
-            <div id="step-error-box" class="step-error"></div>
-            <button type="button" class="btn-submit" onclick="goToStep(2)">Next</button>
-        </div>
-
-        <!-- GROUP 2: Account Security -->
-        <div class="step-section" id="group-2">
+    <div class="auth-form-side">
         
+        <a href="index.php" class="auth-logo">
+            <img src="assets/images/logo.png" alt="MindHub Logo">
+        </a>
 
-            <div class="form-group">
-                <label>CCC Email Address:*</label>
-                <input type="email" id="email" name="email" placeholder="student@ccc.edu.ph" 
-                       value="<?= htmlspecialchars($email ?? '') ?>" required>
+        <div class="register-card">
+            <div class="header">
+                <h2>Get Started Now</h2>
+                <p>Enter your details to create your student account</p>
             </div>
 
-            <div class="form-group">
-                <label>Password:*</label>
-                <input type="password" name="password" placeholder="At least 6 characters" required>
-            </div>
+            <?php if (!empty($error)): ?>
+                <div class="alert-error">
+                    <?= htmlspecialchars($error) ?>
+                </div>
+            <?php endif; ?>
 
-            <div class="form-group">
-                <label>Confirm Password:*</label>
-                <input type="password" name="confirm_password" placeholder="Repeat your password" required>
-            </div>
+            <?php if (!empty($success)): ?>
+                <div class="alert-success">
+                    <?= htmlspecialchars($success) ?><br>
+                    <a href="login.php" style="color: #166534; font-weight: bold; text-decoration: underline;">Click here to log in now</a>
+                </div>
+            <?php endif; ?>
 
-            <div class="btn-group">
-                <button type="button" class="btn-back" onclick="goToStep(1)">Back</button>
-                <button type="submit" class="btn-submit">Register Account</button>
+            <form method="POST" action="register.php" id="registrationForm">
+                <div class="step-section active" id="group-1">
+                    <div class="form-group">
+                        <label>Student ID Number:*</label>
+                        <input type="text" id="id_number" name="id_number" placeholder="Enter your Student ID" 
+                               value="<?= htmlspecialchars($id_number ?? '') ?>" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>First Name:*</label>
+                        <input type="text" id="first_name" name="first_name" placeholder="Enter Your First Name" 
+                               value="<?= htmlspecialchars($first_name ?? '') ?>" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Last Name:*</label>
+                        <input type="text" id="last_name" name="last_name" placeholder="Enter Your Last Name" 
+                               value="<?= htmlspecialchars($last_name ?? '') ?>" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Degree Program / Course:*</label>
+                        <input type="text" id="department_or_program" name="department_or_program" placeholder="e.g., BSIT, BSED, BSBA" 
+                               value="<?= htmlspecialchars($program ?? '') ?>" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Contact Number (Optional):</label>
+                        <input type="text" id="contact_number" name="contact_number" placeholder="e.g., 09123456789" 
+                               value="<?= htmlspecialchars($contact ?? '') ?>">
+                    </div>
+                    
+                    <div id="step-error-box" class="step-error"></div>
+                    <button type="button" class="btn-submit" onclick="goToStep(2)">Next →</button>
+                </div>
+
+                <div class="step-section" id="group-2">
+                    <div class="form-group">
+                        <label>Institutional Email Address:*</label>
+                        <input type="email" id="email" name="email" placeholder="student@school.edu.ph" 
+                               value="<?= htmlspecialchars($email ?? '') ?>" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Password:*</label>
+                        <input type="password" name="password" placeholder="At least 6 characters" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Confirm Password:*</label>
+                        <input type="password" name="confirm_password" placeholder="Repeat your password" required>
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="button" class="btn-back" onclick="goToStep(1)">← Back</button>
+                        <button type="submit" class="btn-submit">Register Account</button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="footer-link">
+                Already have an account? <a href="login.php">Sign In</a>
             </div>
         </div>
-    </form>
 
-    <div class="footer-link">
-        Already have an account? <a href="index.php">Log in here</a>
+        <div class="auth-footer-copy">
+            &copy; 2026 MindHub. All rights reserved.
+        </div>
+
     </div>
+
 </div>
 
 <script>

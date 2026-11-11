@@ -33,6 +33,7 @@ CREATE TABLE appointments (
   end_time TIME NOT NULL,
   nature_of_concern ENUM("Academic", "Personal", "Career", "Mental Health", "Other") NOT NULL,
   consultation_mode ENUM("Face-to-Face", "Online") NOT NULL DEFAULT "Face-to-Face",
+  meeting_link varchar(255) default null,
   status ENUM("pending", "approved", "rejected", "completed", "cancelled") DEFAULT "pending",
   student_notes TEXT DEFAULT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
