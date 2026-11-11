@@ -53,21 +53,7 @@ $appointments = $stmt->fetchAll();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Counselor Dashboard - MindHub</title>
     <link rel="stylesheet" href="../assets/css/style.css">
-    <style>
-        .action-btn {
-            padding: 6px 12px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 600;
-            border: none;
-            cursor: pointer;
-            color: #fff;
-        }
-        .btn-approve { background-color: #16a34a; }
-        .btn-approve:hover { background-color: #15803d; }
-        .btn-reject  { background-color: #dc2626; }
-        .btn-reject:hover { background-color: #b91c1c; }
-    </style>
+  
 </head>
 <body class="dashboard-body">
 

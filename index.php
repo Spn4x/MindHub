@@ -68,12 +68,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - CCC MindHub</title>
     <link rel="stylesheet" href="assets/css/style.css">
+
+     <style>
+        html, body {
+            margin: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+    </style>
+    
 </head>
+
 <body>
+
+   
+<a href="#" class="top-left-logo">
+    <img src="assets/images/logo.png" alt=" Logo">
+</a>
 
 <div class="register-card">
     <div class="header">
-        <h2>CCC MindHub</h2>
+        <h2>MindHub</h2>
         <p>Student Counseling & Online Appointment System</p>
     </div>
 
