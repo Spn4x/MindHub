@@ -51,6 +51,10 @@ foreach ($appointments as $apt) {
 </head>
 <body class="dashboard-body">
 
+<a href="#" class="top-left-logo">
+    <img src="../assets/images/logo.png" alt=" Logo">
+</a>
+
     <nav class="navbar">
         <div class="brand"> MindHub</div>
         <div class="user-info">
