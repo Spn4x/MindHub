@@ -98,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php if (!empty($success)): ?>
         <div class="alert-success">
             <?= htmlspecialchars($success) ?><br>
-            <a href="index.php" style="color: #166534; font-weight: bold; text-decoration: underline;">Click here to log in now</a>
+            <a href="login.php" style="color: #166534; font-weight: bold; text-decoration: underline;">Click here to log in now</a>
         </div>
     <?php endif; ?>
 
