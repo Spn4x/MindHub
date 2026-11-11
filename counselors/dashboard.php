@@ -105,7 +105,12 @@ $appointments = $stmt->fetchAll();
                                     <?= date('M d, Y', strtotime($row['appointment_date'])) ?><br>
                                     <small style="color:#64748b;"><?= date('h:i A', strtotime($row['start_time'])) ?></small>
                                 </td>
-                                <td><?= htmlspecialchars($row['nature_of_concern']) ?></td>
+                                <td>
+    <strong><?= htmlspecialchars($row['nature_of_concern']) ?></strong>
+    <?php if (!empty($row['student_notes'])): ?>
+        <br><small style="color:#64748b; font-style: italic;">"<?= htmlspecialchars($row['student_notes']) ?>"</small>
+    <?php endif; ?>
+</td>
                                 <td><?= htmlspecialchars($row['consultation_mode']) ?></td>
                                 <td>
                                     <span class="badge badge-<?= htmlspecialchars($row['status']) ?>">

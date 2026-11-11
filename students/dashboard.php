@@ -66,6 +66,7 @@ foreach ($appointments as $apt) {
                 <h1>Student Counseling Portal</h1>
                 <p>Track your guidance appointments and consultations privately.</p>
             </div>
+            <a href="resources.php" clas="btn-look">Self-Help Hub</a>
             <a href="book.php" class="btn-book">+ Book New Appointment</a>
         </div>
 

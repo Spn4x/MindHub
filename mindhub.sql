@@ -61,3 +61,12 @@ CREATE TABLE self_help_resources (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (created_by) REFERENCES users(user_id)
 );  
+
+
+
+
+
+
+
+
+
