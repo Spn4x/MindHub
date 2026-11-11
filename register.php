@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="auth-wrapper">
 
     <div class="auth-poster-side">
-        <img class="poster-hero" src="assets/images/post.jpg" alt="MindHub Guidance Poster">
+        <img class="poster-hero" src="assets/images/post.png" alt="MindHub Guidance Poster">
     </div>
 
     <div class="auth-form-side">

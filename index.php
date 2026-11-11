@@ -45,26 +45,27 @@ if (isset($_SESSION['user_id'])) {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
+            gap: 8px;
             margin-bottom: 24px;
         }
 
         .brand-header img {
-            height: 48px;
+            height: 60px;
             width: auto;
             object-fit: contain;
         }
 
         .brand-header .brand-name {
-            font-size: 32px;
-            font-weight: 800;
+            font-size: 42px;
+            font-weight: 900;
             color: #0f172a;
-            letter-spacing: -0.5px;
+            letter-spacing: -0.8px;
         }
 
         .hero-badge {
             display: inline-block;
             color: #809671;
+            padding: 6px 14px;
             font-size: 20px;
             font-weight: 700;
             margin-bottom: 20px;
