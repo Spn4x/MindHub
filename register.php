@@ -3,7 +3,6 @@ session_start();
 require_once 'config/db.php';
 
 $error = '';
-$success = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_number  = trim($_POST['id_number']);
@@ -50,8 +49,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]);
 
             if ($success_status) {
-                $success = "Registration successful! You may now proceed to log in.";
-                $id_number = $first_name = $last_name = $email = $program = $contact = '';
+                header("Location: login.php?registered=1");
+                exit();
             } else {
                 $error = "Something went wrong while saving your account. Please try again.";
             }
@@ -83,20 +82,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <div class="register-card">
             <div class="header">
-                <h2>Get Started Now</h2>
-                <p>Enter your details to create your student account</p>
+                <h2>Mind<span class="hub-accent">Hub</span></h2>
+                <p>Student Counseling & Online Appointment System</p>
             </div>
 
             <?php if (!empty($error)): ?>
                 <div class="alert-error">
                     <?= htmlspecialchars($error) ?>
-                </div>
-            <?php endif; ?>
-
-            <?php if (!empty($success)): ?>
-                <div class="alert-success">
-                    <?= htmlspecialchars($success) ?><br>
-                    <a href="login.php" style="color: #166534; font-weight: bold; text-decoration: underline;">Click here to log in now</a>
                 </div>
             <?php endif; ?>
 

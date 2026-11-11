@@ -45,10 +45,16 @@ if (isset($_SESSION['user_id'])) {
             font-weight: 800;
             color: #0f172a;
             letter-spacing: -0.5px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .landing-nav .brand span {
-            color: #809671;
+        .landing-nav .brand img {
+            height: 36px;
+            width: auto;
+            object-fit: contain;
         }
 
         .landing-nav .nav-actions {
@@ -83,7 +89,7 @@ if (isset($_SESSION['user_id'])) {
         }
 
         .btn-nav-register:hover {
-            background-color: #809671;
+            background-color: #275f02;
         }
 
         .hero-section {
@@ -141,7 +147,7 @@ if (isset($_SESSION['user_id'])) {
         }
 
         .btn-hero-primary:hover {
-            background-color: #809671;
+            background-color: #275f02;
             transform: translateY(-1px);
         }
 
@@ -162,51 +168,6 @@ if (isset($_SESSION['user_id'])) {
             border-color: #94a3b8;
         }
 
-        .pillars-section {
-            max-width: 1100px;
-            margin: 60px auto 80px;
-            padding: 0 20px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 24px;
-        }
-
-        .pillar-card {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 28px 24px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
-            text-align: left;
-        }
-
-        .pillar-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 8px;
-            background: #eff6ff;
-            color: #809671;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            margin-bottom: 16px;
-        }
-
-        .pillar-card h3 {
-            font-size: 18px;
-            color: #0f172a;
-            margin-bottom: 8px;
-            font-weight: 700;
-        }
-
-        .pillar-card p {
-            font-size: 14px;
-            color: #64748b;
-            line-height: 1.5;
-            margin: 0;
-        }
-
         .landing-footer {
             border-top: 1px solid #e2e8f0;
             background: #ffffff;
@@ -214,13 +175,17 @@ if (isset($_SESSION['user_id'])) {
             text-align: center;
             color: #94a3b8;
             font-size: 13px;
+            margin-top: 80px;
         }
     </style>
 </head>
 <body class="landing-page">
 
     <nav class="landing-nav">
-        <div class="brand">Mind<span>Hub</span></div>
+        <a href="index.php" class="brand">
+            <img src="assets/images/logo.png" alt="MindHub Logo">
+            <span>Mind<span class="hub-accent">Hub</span></span>
+        </a>
         <div class="nav-actions">
             <a href="login.php" class="btn-nav-login">Log In</a>
             <a href="register.php" class="btn-nav-register">Create Account</a>
@@ -241,9 +206,8 @@ if (isset($_SESSION['user_id'])) {
         </div>
     </div>
 
-
     <footer class="landing-footer">
-        MindHub - Student Counseling & Online Appointment System &bull; Dedicated to Student Wellness
+        Mind<span class="hub-accent">Hub</span> &bull; Student Counseling & Online Appointment System
     </footer>
 
 </body>

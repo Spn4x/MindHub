@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <div class="register-card">
         <div class="header">
-            <h2>MindHub</h2>
+            <h2>Mind<span class="hub-accent">Hub</span></h2>
             <p>Student Counseling & Online Appointment System</p>
         </div>
 

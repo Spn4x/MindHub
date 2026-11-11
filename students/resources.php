@@ -2,7 +2,7 @@
 session_start();
 
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'student') {
-    header("Location: ../index.php");
+    header("Location: ../login.php");
     exit();
 }
 
@@ -51,79 +51,17 @@ $resources = $stmt->fetchAll();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Self-Help Resources - MindHub</title>
     <link rel="stylesheet" href="../assets/css/style.css">
-    <style>
-        .filter-bar {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
-        }
-        .filter-btn {
-            background-color: #ffffff;
-            color: #334155;
-            padding: 8px 16px;
-            border-radius: 20px;
-            border: 1px solid #cbd5e1;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none;
-            transition: all 0.2s;
-        }
-
-         .filter-btn.active {
-            background-color: #3e6a53;
-            color: #ffffff;
-         }
-
-        .filter-btn:hover {
-            background-color: #122E24;
-            color: #ffffff;
-            border-color: #2563eb;
-        }
-        .resources-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 20px;
-        }
-        .resource-card {
-            background: #ffffff;
-            padding: 24px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .resource-card h3 {
-            color: #0f172a;
-            font-size: 18px;
-            margin: 10px 0;
-            line-height: 1.4;
-        }
-        .resource-card p {
-            color: #475569;
-            font-size: 14px;
-            line-height: 1.6;
-            margin-bottom: 15px;
-        }
-        .resource-meta {
-            font-size: 12px;
-            color: #94a3b8;
-            border-top: 1px solid #f1f5f9;
-            padding-top: 12px;
-            display: flex;
-            justify-content: space-between;
-        }
-    </style>
 </head>
 <body class="dashboard-body">
 
     <nav class="navbar">
-        <div class="brand">MindHub - Self-Help Resources</div>
+        <a href="dashboard.php" class="brand">
+            <img src="../assets/images/logo.png" alt="MindHub Logo">
+            <span>Mind<span class="hub-accent">Hub</span></span>
+        </a>
         <div class="user-info">
             <span>Welcome, <strong><?= htmlspecialchars($_SESSION['name'] ?? 'Student') ?></strong></span>
-            <a href="dashboard.php" class="btn-logout" style="background:#3e6a53;">Dashboard</a>
+            <a href="dashboard.php" class="btn-logout" style="background:#3e6a53; color:#fff; border:none;">Dashboard</a>
             <a href="../logout.php" class="btn-logout">Logout</a>
         </div>
     </nav>

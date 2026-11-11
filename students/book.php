@@ -2,14 +2,13 @@
 session_start();
 
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'student') {
-    header("Location: ../index.php");
+    header("Location: ../login.php");
     exit();
 }
 
 require_once __DIR__ . '/../config/db.php';
 
 $error = '';
-$success = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $appointment_date  = trim($_POST['appointment_date'] ?? '');
@@ -52,7 +51,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $consultation_mode,
                 $student_notes
             ])) {
-                $success = "Appointment request submitted! Awaiting counselor approval.";
+                header("Location: dashboard.php");
+                exit();
             } else {
                 $error = "Failed to submit request. Please try again.";
             }
@@ -71,7 +71,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body class="dashboard-body">
 
     <nav class="navbar">
-        <div class="brand">MindHub</div>
+        <a href="dashboard.php" class="brand">
+            <img src="../assets/images/logo.png" alt="MindHub Logo">
+            <span>Mind<span class="hub-accent">Hub</span></span>
+        </a>
         <div class="user-info">
             <span>Welcome, <strong><?= htmlspecialchars($_SESSION['name'] ?? '') ?></strong></span>
             <a href="../logout.php" class="btn-logout">Logout</a>
@@ -84,21 +87,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <h1>Book Counseling</h1>
                 <p>Request a private consultation with the Guidance Office.</p>
             </div>
-            <a href="dashboard.php" class="btn-logout" style="background:#122E24;">← Back</a>
+            <a href="dashboard.php" class="btn-logout" style="background:#122E24; color:#fff; border:none;">← Back</a>
         </div>
 
         <div class="table-container">
             <?php if (!empty($error)): ?>
                 <div class="alert-error"><?= htmlspecialchars($error) ?></div>
-            <?php endif; ?>
-
-            <?php if (!empty($success)): ?>
-                <div class="alert-success">
-                    <?= htmlspecialchars($success) ?><br>
-                    <a href="dashboard.php" style="color: #166534; font-weight: bold; text-decoration: underline;">
-                        Go to Dashboard to view your booking →
-                    </a>
-                </div>
             <?php endif; ?>
 
             <form method="POST" action="book.php">
@@ -109,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <div class="form-group">
                     <label>Time Slot:*</label>
-                    <select name="start_time" style="width:100%; padding:10px; border-radius:6px; border:1px solid #cbd5e1;" required>
+                    <select name="start_time" required>
                         <option value="">-- Select Time Slot --</option>
                         <option value="08:00:00">08:00 AM - 09:00 AM</option>
                         <option value="09:00:00">09:00 AM - 10:00 AM</option>
@@ -122,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <div class="form-group">
                     <label>Nature of Concern:*</label>
-                    <select name="nature_of_concern" style="width:100%; padding:10px; border-radius:6px; border:1px solid #cbd5e1;" required>
+                    <select name="nature_of_concern" required>
                         <option value="">-- Select Category --</option>
                         <option value="Academic">Academic</option>
                         <option value="Personal">Personal</option>
@@ -134,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <div class="form-group">
                     <label>Consultation Mode:*</label>
-                    <select name="consultation_mode" style="width:100%; padding:10px; border-radius:6px; border:1px solid #cbd5e1;" required>
+                    <select name="consultation_mode" required>
                         <option value="Face-to-Face">Face-to-Face</option>
                         <option value="Online">Online</option>
                     </select>
@@ -142,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <div class="form-group">
                     <label>Notes / Reason (Optional):</label>
-                    <textarea name="student_notes" rows="3" style="width:100%; padding:10px; border-radius:6px; border:1px solid #cbd5e1;" placeholder="Anything you want the counselor to know in advance..."></textarea>
+                    <textarea name="student_notes" rows="3" placeholder="Anything you want the counselor to know in advance..."></textarea>
                 </div>
 
                 <button type="submit" class="btn-submit">Submit Request</button>

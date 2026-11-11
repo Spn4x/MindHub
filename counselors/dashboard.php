@@ -2,7 +2,7 @@
 session_start();
 
 if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'], ['counselor', 'admin'])) {
-    header("Location: ../index.php");
+    header("Location: ../login.php");
     exit();
 }
 
@@ -78,13 +78,13 @@ $followupWatchlist = $watchlistStmt->fetchAll();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Counselor Console - MindHub</title>
+    <title>Counselor Portal - MindHub</title>
     <link rel="stylesheet" href="../assets/css/style.css">
     <style>
         .split-layout {
             display: grid;
-            grid-template-columns: 1.6fr 1fr;
-            gap: 20px;
+            grid-template-columns: 1.65fr 1fr;
+            gap: 24px;
             align-items: start;
         }
         @media (max-width: 950px) {
@@ -93,147 +93,208 @@ $followupWatchlist = $watchlistStmt->fetchAll();
             }
         }
         .action-btn {
-            padding: 5px 10px;
+            padding: 5px 12px;
             border-radius: 4px;
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 600;
             border: none;
             cursor: pointer;
             color: #fff;
         }
-        .btn-approve { background-color: #16a34a; }
-        .btn-reject  { background-color: #dc2626; }
-        .schedule-card {
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
-            padding: 12px;
-            margin-bottom: 12px;
-            background: #f8fafc;
+        .btn-approve { background-color: var(--matcha-dark); }
+        .btn-approve:hover { background-color: var(--matcha-dark-hover); }
+        .btn-reject  { background-color: var(--palette-brown); }
+        .btn-reject:hover { background-color: #8c796b; }
+        
+        .student-meta {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 3px;
+            line-height: 1.4;
         }
-        .mode-badge {
-            font-size: 10px;
+        .student-contact {
+            font-size: 12px;
+            color: #475569;
+            margin-top: 4px;
+        }
+        .student-contact span {
+            color: #94a3b8;
+            margin-right: 2px;
+        }
+
+        .student-note-text {
+            font-size: 12px;
+            color: #64748b;
+            font-style: italic;
+            margin-top: 4px;
+            line-height: 1.4;
+        }
+
+        .schedule-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .schedule-row:last-child {
+            border-bottom: none;
+        }
+        .schedule-date {
             font-weight: 700;
-            padding: 3px 6px;
-            border-radius: 4px;
-            text-transform: uppercase;
+            color: var(--palette-navy);
+            font-size: 14px;
         }
-        .mode-ftf { background-color: #dbeafe; color: #1e40af; }
-        .mode-online { background-color: #f3e8ff; color: #6b21a8; }
-        .concern-tag {
-            padding: 3px 7px;
-            border-radius: 4px;
+        .schedule-time {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 2px;
+        }
+        .schedule-student {
+            font-size: 13px;
+            font-weight: 600;
+            color: #334155;
+            margin-top: 4px;
+        }
+
+        .mode-text {
             font-size: 11px;
             font-weight: 700;
-            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--palette-blue);
         }
-        .concern-MentalHealth { background: #fee2e2; color: #991b1b; }
-        .concern-Personal     { background: #fef3c7; color: #92400e; }
-        .concern-Academic     { background: #dbeafe; color: #1e40af; }
-        .concern-Career       { background: #dcfce7; color: #166534; }
-        .concern-Other        { background: #f1f5f9; color: #475569; }
-        .visit-badge {
-            font-size: 10px;
+
+        .followup-card {
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .followup-card:last-child {
+            border-bottom: none;
+        }
+        .followup-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .followup-name {
             font-weight: 700;
-            padding: 2px 6px;
-            border-radius: 10px;
-            display: inline-block;
-            margin-left: 4px;
+            font-size: 13px;
+            color: var(--palette-navy);
         }
-        .visit-new { background: #dcfce7; color: #166534; }
-        .visit-repeat { background: #fef3c7; color: #854d0e; }
-        .watchlist-item {
-            border-left: 3px solid #ef4444;
-            background: #fff;
-            padding: 10px 12px;
-            border-radius: 4px;
-            margin-bottom: 10px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        .followup-link {
+            font-size: 12px;
+            color: var(--matcha-dark);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .followup-link:hover {
+            text-decoration: underline;
+        }
+        .followup-summary {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 4px;
+            line-height: 1.4;
+        }
+        
+        .visit-flag {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--palette-blue);
+            margin-left: 6px;
         }
     </style>
 </head>
 <body class="dashboard-body">
 
     <nav class="navbar">
-        <div class="brand">MindHub - Clinical Guidance Portal</div>
+        <a href="dashboard.php" class="brand">
+            <img src="../assets/images/logo.png" alt="MindHub Logo">
+            <span>Mind<span class="hub-accent">Hub</span></span>
+            <span class="brand-badge">Counselor Portal</span>
+        </a>
         <div class="user-info">
             <span>Counselor: <strong><?= htmlspecialchars($_SESSION['name'] ?? 'Staff') ?></strong></span>
             <a href="../logout.php" class="btn-logout">Logout</a>
         </div>
     </nav>
 
-    <div class="dashboard-container" style="max-width: 1250px;">
+    <div class="dashboard-container">
+        
         <div class="welcome-header">
             <div>
-                <h1>Hello, <strong><?= htmlspecialchars($_SESSION['name'] ?? 'Staff') ?></strong></h1>
-                <p>Manage student intake triage, scheduled meeting rooms, and clinical follow-ups.</p>
+                <h1>Appointments & Consultations</h1>
+                <p>Manage student appointment requests, review today's schedule, and write case notes.</p>
             </div>
-            <a href="add-resource.php" class="btn-book" style="background-color: #059669;">+ Post Guidance Article</a>
+            <a href="add-resource.php" class="btn-book">+ Post Guidance Article</a>
         </div>
 
         <div class="split-layout">
             
             <div class="table-container">
-                <h2>Student Intake & Inquiries</h2>
+                <h2>Appointment Requests</h2>
 
                 <?php if (empty($appointments)): ?>
                     <div class="empty-state">
-                        <p>No student inquiries recorded.</p>
+                        <p>No appointment records found.</p>
                     </div>
                 <?php else: ?>
                     <table>
                         <thead>
                             <tr>
-                                <th>Student & Contact</th>
-                                <th>Concern & Notes</th>
+                                <th>Student</th>
+                                <th>Concern</th>
                                 <th>Schedule</th>
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php foreach ($appointments as $row): ?>
-                                <?php $concernClass = 'concern-' . str_replace(' ', '', $row['nature_of_concern']); ?>
                                 <tr>
                                     <td>
                                         <strong><?= htmlspecialchars($row['first_name'] . ' ' . $row['last_name']) ?></strong>
                                         <?php if ($row['visit_count'] == 0): ?>
-                                            <span class="visit-badge visit-new">1st Visit</span>
+                                            <span class="visit-flag">First Visit</span>
                                         <?php else: ?>
-                                            <span class="visit-badge visit-repeat"><?= $row['visit_count'] + 1 ?>th Consultation</span>
+                                            <span class="visit-flag">Returning</span>
                                         <?php endif; ?>
-                                        <br>
-                                        <small style="color:#64748b;"><?= htmlspecialchars($row['id_number']) ?> &bull; <?= htmlspecialchars($row['department_or_program'] ?? 'General') ?></small><br>
-                                        <small style="color:#2563eb;">✉ <?= htmlspecialchars($row['email']) ?></small>
-                                        <?php if (!empty($row['contact_number'])): ?>
-                                            <br><small style="color:#475569;">📞 <?= htmlspecialchars($row['contact_number']) ?></small>
-                                        <?php endif; ?>
+                                        <div class="student-meta">
+                                            ID: <?= htmlspecialchars($row['id_number']) ?> &bull; <?= htmlspecialchars($row['department_or_program'] ?? 'General') ?>
+                                        </div>
+                                        <div class="student-contact">
+                                            <span>Email:</span> <?= htmlspecialchars($row['email']) ?>
+                                            <?php if (!empty($row['contact_number'])): ?>
+                                                <br><span>Phone:</span> <?= htmlspecialchars($row['contact_number']) ?>
+                                            <?php endif; ?>
+                                        </div>
                                     </td>
                                     <td>
-                                        <span class="concern-tag <?= $concernClass ?>">
-                                            <?= htmlspecialchars($row['nature_of_concern']) ?>
-                                        </span>
-                                        <?php if ($row['consultation_mode'] === 'Face-to-Face'): ?>
-                                            <span class="mode-badge mode-ftf">FTF</span>
-                                        <?php else: ?>
-                                            <span class="mode-badge mode-online">Online</span>
-                                        <?php endif; ?>
-
+                                        <strong><?= htmlspecialchars($row['nature_of_concern']) ?></strong>
+                                        <div class="mode-text"><?= htmlspecialchars($row['consultation_mode']) ?></div>
                                         <?php if (!empty($row['student_notes'])): ?>
-                                            <div style="margin-top: 5px; font-size: 11px; color: #475569; background: #f8fafc; padding: 4px 6px; border-radius: 4px;">
-                                                <em>"<?= htmlspecialchars($row['student_notes']) ?>"</em>
+                                            <div class="student-note-text">
+                                                <?= htmlspecialchars($row['student_notes']) ?>
                                             </div>
                                         <?php endif; ?>
                                     </td>
                                     <td>
-                                        <strong><?= date('M d', strtotime($row['appointment_date'])) ?></strong><br>
-                                        <small style="color:#64748b;"><?= date('h:i A', strtotime($row['start_time'])) ?></small><br>
-                                        <span class="badge badge-<?= htmlspecialchars($row['status']) ?>"><?= htmlspecialchars($row['status']) ?></span>
+                                        <strong><?= date('M d, Y', strtotime($row['appointment_date'])) ?></strong>
+                                        <div class="student-meta"><?= date('h:i A', strtotime($row['start_time'])) ?></div>
+                                    </td>
+                                    <td>
+                                        <span class="status-indicator status-<?= htmlspecialchars($row['status']) ?>">
+                                            <span class="status-dot"></span>
+                                            <?= htmlspecialchars($row['status']) ?>
+                                        </span>
                                     </td>
                                     <td>
                                         <?php if ($row['status'] === 'pending'): ?>
                                             <form method="POST">
                                                 <input type="hidden" name="appointment_id" value="<?= $row['appointment_id'] ?>">
                                                 <?php if ($row['consultation_mode'] === 'Online'): ?>
-                                                    <input type="text" name="meeting_link" placeholder="Google Meet / Zoom URL" style="font-size:11px; padding:4px; margin-bottom:4px; width:100%;">
+                                                    <input type="text" name="meeting_link" placeholder="Enter meeting link..." style="font-size:11px; padding:4px 6px; margin-bottom:6px; width:100%;">
                                                 <?php endif; ?>
                                                 <div style="display:flex; gap:4px;">
                                                     <button type="submit" name="action" value="approved" class="action-btn btn-approve">Accept</button>
@@ -241,15 +302,15 @@ $followupWatchlist = $watchlistStmt->fetchAll();
                                                 </div>
                                             </form>
                                         <?php elseif ($row['status'] === 'approved'): ?>
-                                            <a href="session-notes.php?appointment_id=<?= $row['appointment_id'] ?>" style="font-size:11px; color:#2563eb; text-decoration:none; font-weight:700;">
-                                                📝 Case Notes →
+                                            <a href="session-notes.php?appointment_id=<?= $row['appointment_id'] ?>" style="font-size:12px; color:var(--matcha-dark); text-decoration:none; font-weight:700;">
+                                                Case Notes &rarr;
                                             </a>
                                         <?php elseif ($row['status'] === 'completed'): ?>
-                                            <a href="session-notes.php?appointment_id=<?= $row['appointment_id'] ?>" style="color:#16a34a; font-size:11px; text-decoration:none; font-weight:700;">
-                                                ✓ Completed
+                                            <a href="session-notes.php?appointment_id=<?= $row['appointment_id'] ?>" style="color:#64748b; font-size:12px; text-decoration:none; font-weight:600;">
+                                                View Notes
                                             </a>
                                         <?php else: ?>
-                                            <span style="color:#94a3b8; font-size:11px;">Declined</span>
+                                            <span style="color:#94a3b8; font-size:12px;">Declined</span>
                                         <?php endif; ?>
                                     </td>
                                 </tr>
@@ -261,8 +322,8 @@ $followupWatchlist = $watchlistStmt->fetchAll();
 
             <div>
                 
-                <div class="table-container" style="margin-bottom: 20px;">
-                    <h2>Upcoming Consultations</h2>
+                <div class="table-container" style="margin-bottom: 24px;">
+                    <h2>Upcoming Schedule</h2>
 
                     <?php 
                     $upcoming = array_filter($appointments, function($a) {
@@ -272,54 +333,51 @@ $followupWatchlist = $watchlistStmt->fetchAll();
 
                     <?php if (empty($upcoming)): ?>
                         <div class="empty-state">
-                            <p>No upcoming sessions scheduled.</p>
+                            <p>No upcoming consultations scheduled.</p>
                         </div>
                     <?php else: ?>
                         <?php foreach ($upcoming as $item): ?>
-                            <div class="schedule-card">
-                                <div style="display:flex; justify-content:space-between; align-items:center;">
-                                    <strong><?= date('M d, Y', strtotime($item['appointment_date'])) ?></strong>
-                                    <?php if ($item['consultation_mode'] === 'Face-to-Face'): ?>
-                                        <span class="mode-badge mode-ftf">FTF</span>
-                                    <?php else: ?>
-                                        <span class="mode-badge mode-online">Online</span>
+                            <div class="schedule-row">
+                                <div>
+                                    <div class="schedule-date"><?= date('M d, Y', strtotime($item['appointment_date'])) ?></div>
+                                    <div class="schedule-time"><?= date('h:i A', strtotime($item['start_time'])) ?> - <?= date('h:i A', strtotime($item['end_time'])) ?></div>
+                                    <div class="schedule-student"><?= htmlspecialchars($item['first_name'] . ' ' . $item['last_name']) ?></div>
+                                    <?php if (!empty($item['meeting_link'])): ?>
+                                        <div style="margin-top: 4px; font-size: 11px;">
+                                            <a href="<?= htmlspecialchars($item['meeting_link']) ?>" target="_blank" style="color: var(--palette-blue); text-decoration: underline;">Open Meeting Link</a>
+                                        </div>
                                     <?php endif; ?>
                                 </div>
-                                <div style="font-size: 12px; color: #64748b; margin-top: 2px;">
-                                    <?= date('h:i A', strtotime($item['start_time'])) ?> - <?= date('h:i A', strtotime($item['end_time'])) ?>
+                                <div style="text-align: right;">
+                                    <div class="mode-text"><?= htmlspecialchars($item['consultation_mode']) ?></div>
                                 </div>
-                                <div style="font-size: 13px; font-weight: 600; color: #0f172a; margin-top: 4px;">
-                                    <?= htmlspecialchars($item['first_name'] . ' ' . $item['last_name']) ?>
-                                </div>
-                                <?php if (!empty($item['meeting_link'])): ?>
-                                    <div style="margin-top: 6px; font-size: 11px;">
-                                        🔗 <a href="<?= htmlspecialchars($item['meeting_link']) ?>" target="_blank" style="color: #2563eb; text-decoration: underline;">Open Online Room</a>
-                                    </div>
-                                <?php endif; ?>
                             </div>
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </div>
 
                 <div class="table-container">
-                    <h2 style="color: #991b1b;">⚠️ Clinical Follow-Up Watchlist</h2>
+                    <h2>Follow-up Reminders</h2>
 
                     <?php if (empty($followupWatchlist)): ?>
                         <div class="empty-state">
-                            <p>No cases currently flagged for follow-up.</p>
+                            <p>No students flagged for follow-up.</p>
                         </div>
                     <?php else: ?>
                         <?php foreach ($followupWatchlist as $case): ?>
-                            <div class="watchlist-item">
-                                <div style="display:flex; justify-content:space-between; align-items:center;">
-                                    <strong><?= htmlspecialchars($case['first_name'] . ' ' . $case['last_name']) ?></strong>
-                                    <a href="session-notes.php?appointment_id=<?= $case['appointment_id'] ?>" style="font-size:11px; color:#2563eb; font-weight:600; text-decoration:none;">View File →</a>
+                            <div class="followup-card">
+                                <div class="followup-header">
+                                    <div class="followup-name"><?= htmlspecialchars($case['first_name'] . ' ' . $case['last_name']) ?></div>
+                                    <a href="session-notes.php?appointment_id=<?= $case['appointment_id'] ?>" class="followup-link">View Notes &rarr;</a>
                                 </div>
-                                <div style="font-size: 11px; color: #64748b; margin: 3px 0;">
-                                    ID: <?= htmlspecialchars($case['id_number']) ?> <?= !empty($case['contact_number']) ? '• ' . htmlspecialchars($case['contact_number']) : '' ?>
+                                <div class="student-meta">
+                                    ID: <?= htmlspecialchars($case['id_number']) ?>
+                                    <?php if (!empty($case['contact_number'])): ?>
+                                        &bull; Phone: <?= htmlspecialchars($case['contact_number']) ?>
+                                    <?php endif; ?>
                                 </div>
-                                <div style="font-size: 12px; color: #334155; font-style: italic;">
-                                    "<?= htmlspecialchars(substr($case['case_summary'], 0, 75)) ?>..."
+                                <div class="followup-summary">
+                                    <?= htmlspecialchars(substr($case['case_summary'], 0, 90)) ?>...
                                 </div>
                             </div>
                         <?php endforeach; ?>
