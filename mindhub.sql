@@ -66,6 +66,20 @@ CREATE TABLE self_help_resources (
 
 
 
+-- 12345678 password
+insert into users (id_number, first_name, last_name, email, password_hash, role department_or_program, contact_number
+) values (
+  'COUNSELOR-01','Maria','Santos', 'counselor@ccc.edu.ph', '$2y$10$o43k01OfwVJaYZ8/rKo4se09BWnlREHBc64rtA9ROLouy.2BBjPlq', 'counselor', 'Guidance Office','09123456789'
+);
+
+insert into self_help_resources (title, category, content, created_by) values
+('Managing Academic Stress & Burnout', 'Academic', 'College life can be demanding. When assignments pile up, break your work into smaller, 25-minute chunks using the Pomodoro technique. Take regular 5-minute screen breaks, stay hydrated, and remember that seeking guidance from professors or counselors is a strength, not a weakness.', 1),
+('Overcoming Exam Anxiety', 'Academic', 'Exam anxiety is common among college students. Practice the 4-7-8 breathing exercise: inhale quietly through your nose for 4 seconds, hold your breath for 7 seconds, and exhale completely through your mouth for 8 seconds. Avoid last-minute cramming and prepare your materials the night before.', 1),
+('Healthy Sleep Habits for Students', 'Mental Health', 'Quality sleep directly impacts memory consolidation and emotional regulation. Aim for 7 to 8 hours of restful sleep every night. Keep a regular sleep schedule, avoid caffeine after 3:00 PM, and turn off mobile phone screens at least 30 minutes before sleeping.', 1),
+('Building Healthy Boundaries With Peers', 'Personal', 'Learning to say "no" without guilt is an essential life skill. If you are overwhelmed with your own coursework, politely decline extra responsibilities. True friends and peers will respect your personal limits and well-being.', 1);
+
+
+
 
 
 
