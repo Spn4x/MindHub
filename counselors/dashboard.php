@@ -271,7 +271,10 @@ $followupWatchlist = $watchlistStmt->fetchAll();
                                         </div>
                                     </td>
                                     <td>
-                                        <strong><?= htmlspecialchars($row['nature_of_concern']) ?></strong>
+                                        <?php $concernClass = 'concern-' . str_replace(' ', '', $row['nature_of_concern']); ?>
+                                        <span class="concern-text <?= $concernClass ?>">
+                                            <?= htmlspecialchars($row['nature_of_concern']) ?>
+                                        </span>
                                         <div class="mode-text"><?= htmlspecialchars($row['consultation_mode']) ?></div>
                                         <?php if (!empty($row['student_notes'])): ?>
                                             <div class="student-note-text">

@@ -72,18 +72,9 @@ $next_session = !empty($upcoming_approved) ? reset($upcoming_approved) : null;
     <title>Student Dashboard - MindHub</title>
     <link rel="stylesheet" href="../assets/css/style.css">
     <style>
-        .spotlight-card {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 16px 20px;
+        .spotlight-block {
+            padding: 0 0 20px 0;
             margin-bottom: 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
-            flex-wrap: wrap;
-            gap: 15px;
         }
         .spotlight-title {
             font-size: 11px;
@@ -94,14 +85,14 @@ $next_session = !empty($upcoming_approved) ? reset($upcoming_approved) : null;
             margin-bottom: 4px;
         }
         .spotlight-details {
-            font-size: 15px;
+            font-size: 18px;
             font-weight: 700;
             color: var(--palette-navy);
+            margin-bottom: 4px;
         }
         .spotlight-meta {
             font-size: 13px;
             color: #64748b;
-            margin-top: 2px;
         }
         .btn-cancel {
             background-color: transparent;
@@ -168,23 +159,18 @@ $next_session = !empty($upcoming_approved) ? reset($upcoming_approved) : null;
         </div>
 
         <?php if ($next_session): ?>
-            <div class="spotlight-card">
-                <div>
-                    <div class="spotlight-title">Upcoming Consultation Reminder</div>
-                    <div class="spotlight-details">
-                        <?= date('l, F j, Y', strtotime($next_session['appointment_date'])) ?> at <?= date('h:i A', strtotime($next_session['start_time'])) ?>
-                    </div>
-                    <div class="spotlight-meta">
-                        Counselor: <strong><?= htmlspecialchars($next_session['counselor_fname'] . ' ' . $next_session['counselor_lname']) ?></strong> &bull; 
-                        Concern: <?= htmlspecialchars($next_session['nature_of_concern']) ?> &bull; 
-                        Mode: <?= htmlspecialchars($next_session['consultation_mode']) ?>
-                    </div>
+            <?php $reminderConcernClass = 'concern-' . str_replace(' ', '', $next_session['nature_of_concern']); ?>
+            <div class="spotlight-block">
+                <div class="spotlight-title">Upcoming Consultation Reminder</div>
+                <div class="spotlight-details">
+                    <?= date('l, F j, Y', strtotime($next_session['appointment_date'])) ?> at <?= date('h:i A', strtotime($next_session['start_time'])) ?>
                 </div>
-                <div>
+                <div class="spotlight-meta">
+                    Counselor: <strong><?= htmlspecialchars($next_session['counselor_fname'] . ' ' . $next_session['counselor_lname']) ?></strong> &bull; 
+                    Concern: <span class="concern-text <?= $reminderConcernClass ?>"><?= htmlspecialchars($next_session['nature_of_concern']) ?></span> &bull; 
+                    Mode: <?= htmlspecialchars($next_session['consultation_mode']) ?>
                     <?php if ($next_session['consultation_mode'] === 'Online' && !empty($next_session['meeting_link'])): ?>
-                        <a href="<?= htmlspecialchars($next_session['meeting_link']) ?>" target="_blank" class="btn-book" style="padding: 8px 14px; font-size: 13px;">
-                            Join Meeting Link &rarr;
-                        </a>
+                        &bull; <a href="<?= htmlspecialchars($next_session['meeting_link']) ?>" target="_blank" style="color: var(--palette-blue); font-weight: 600; text-decoration: underline;">Open Meeting Room</a>
                     <?php endif; ?>
                 </div>
             </div>
@@ -217,9 +203,12 @@ $next_session = !empty($upcoming_approved) ? reset($upcoming_approved) : null;
                                 <td><?= date('M d, Y', strtotime($row['appointment_date'])) ?></td>
                                 <td><?= date('h:i A', strtotime($row['start_time'])) ?></td>
                                 <td>
-                                    <strong><?= htmlspecialchars($row['nature_of_concern']) ?></strong>
+                                    <?php $concernClass = 'concern-' . str_replace(' ', '', $row['nature_of_concern']); ?>
+                                    <span class="concern-text <?= $concernClass ?>">
+                                        <?= htmlspecialchars($row['nature_of_concern']) ?>
+                                    </span>
                                     <?php if (!empty($row['student_notes'])): ?>
-                                        <div style="font-size: 12px; color: #64748b; font-style: italic; margin-top: 3px;">
+                                        <div style="font-size: 12px; color: #64748b; font-style: italic; margin-top: 4px;">
                                             <?= htmlspecialchars($row['student_notes']) ?>
                                         </div>
                                     <?php endif; ?>

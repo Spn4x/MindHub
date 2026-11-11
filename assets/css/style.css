@@ -64,18 +64,18 @@ body.login-page {
     justify-content: center;
 }
 
-.auth-form-side {
-    flex: 1;
-    justify-content: space-between;
-    padding: 30px 50px;
-}
-
 .poster-hero {
     width: 100%;
     height: calc(100vh - 40px);
     object-fit: cover;
     border-radius: 24px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.auth-form-side {
+    flex: 1;
+    justify-content: space-between;
+    padding: 30px 50px;
 }
 
 .auth-logo img,
@@ -597,7 +597,6 @@ textarea {
 }
 
 .mode-badge,
-.concern-tag,
 .visit-badge {
     font-size: 10px;
     font-weight: 700;
@@ -610,27 +609,40 @@ textarea {
     text-transform: uppercase;
 }
 
-.mode-ftf,
-.concern-Academic {
+.mode-ftf {
     background-color: #D9E2E8;
     color: var(--palette-navy);
 }
 
-.mode-online,
-.concern-MentalHealth,
-.concern-Career {
+.mode-online {
     background-color: #EADBDF;
     color: var(--palette-purple);
 }
 
+.concern-text {
+    font-weight: 700;
+    font-size: 13px;
+    display: inline-block;
+}
+
+.concern-MentalHealth {
+    color: var(--palette-purple);
+}
+
+.concern-Academic {
+    color: var(--palette-blue);
+}
+
+.concern-Career {
+    color: var(--palette-navy);
+}
+
 .concern-Personal {
-    background-color: #EAE5E1;
-    color: #5E5045;
+    color: var(--palette-brown);
 }
 
 .concern-Other {
-    background-color: #f1f5f9;
-    color: var(--palette-navy);
+    color: #8c7e75;
 }
 
 .visit-new {
