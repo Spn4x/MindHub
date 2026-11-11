@@ -70,10 +70,13 @@ body {
     background: transparent; /* Or #ffffff if you want a white card background */
 }
 
+.header .brands span{
+color: #809671; /* CCC Green */
 
-.header h2 {    
+}
+.header .brands {    
     text-align: left;
-    color: #809671; /* CCC Navy Blue */
+    color: #000; /* CCC Navy Blue */
     font-size: 32px;
     margin-bottom: 5px;
 }
