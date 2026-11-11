@@ -231,7 +231,7 @@ input:focus {
    DASHBOARD STYLES
    ======================================================== */
 body.dashboard-body {
-    background-color: #f8fafc;
+    background-color: #E5E0D8;
     display: block;
     min-height: 100vh;
     padding: 0;
@@ -240,7 +240,7 @@ body.dashboard-body {
 
 /* Navigation Bar */
 .navbar {
-    background-color: #1e3a8a;
+    background-color: #809671;
     color: #ffffff;
     padding: 15px 30px;
     display: flex;
@@ -261,7 +261,7 @@ body.dashboard-body {
 }
 
 .btn-logout {
-    background-color: #ef4444;
+    background-color: #3e6a53;
     color: #ffffff;
     text-decoration: none;
     padding: 8px 14px;
@@ -272,7 +272,7 @@ body.dashboard-body {
 }
 
 .btn-logout:hover {
-    background-color: #dc2626;
+    background-color: #122E24;
 }
 
 /* Dashboard Container */
@@ -300,8 +300,33 @@ body.dashboard-body {
     margin-top: 4px;
 }
 
-.btn-book {
-    background-color: #2563eb;
+
+.btn-look {
+
+    background-color: #3e6a53;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    display: inline-block;
+    transition: background 0.2s;
+    display: flex;
+    align-items: right;
+    margin-right: -250px;
+   
+}
+
+.btn-look :hover {
+    background-color: #122E24;
+}
+
+
+
+
+
+.btn-book{
+    background-color: #3e6a53;
     color: #ffffff;
     text-decoration: none;
     padding: 12px 20px;
@@ -311,8 +336,8 @@ body.dashboard-body {
     transition: background 0.2s;
 }
 
-.btn-book:hover {
-    background-color: #1d4ed8;
+.btn-book :hover {
+    background-color: #122E24;
 }
 
 /* Statistics Grid */

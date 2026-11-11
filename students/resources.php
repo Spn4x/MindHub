@@ -70,8 +70,14 @@ $resources = $stmt->fetchAll();
             text-decoration: none;
             transition: all 0.2s;
         }
-        .filter-btn:hover, .filter-btn.active {
-            background-color: #2563eb;
+
+         .filter-btn.active {
+            background-color: #3e6a53;
+            color: #ffffff;
+         }
+
+        .filter-btn:hover {
+            background-color: #122E24;
             color: #ffffff;
             border-color: #2563eb;
         }
@@ -117,7 +123,7 @@ $resources = $stmt->fetchAll();
         <div class="brand">MindHub - Self-Help Resources</div>
         <div class="user-info">
             <span>Welcome, <strong><?= htmlspecialchars($_SESSION['name'] ?? 'Student') ?></strong></span>
-            <a href="dashboard.php" class="btn-logout" style="background:#2563eb;">Dashboard</a>
+            <a href="dashboard.php" class="btn-logout" style="background:#3e6a53;">Dashboard</a>
             <a href="../logout.php" class="btn-logout">Logout</a>
         </div>
     </nav>

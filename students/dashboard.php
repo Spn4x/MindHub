@@ -46,13 +46,13 @@ foreach ($appointments as $apt) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Dashboard - CCC MindHub</title>
+    <title>Student Dashboard - MindHub</title>
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body class="dashboard-body">
 
     <nav class="navbar">
-        <div class="brand">CCC MindHub</div>
+        <div class="brand"> MindHub</div>
         <div class="user-info">
             <span>Welcome, <strong><?= htmlspecialchars($_SESSION['name']) ?></strong> (<?= htmlspecialchars($_SESSION['id_number']) ?>)</span>
             <a href="../logout.php" class="btn-logout">Logout</a>
@@ -66,7 +66,8 @@ foreach ($appointments as $apt) {
                 <h1>Student Counseling Portal</h1>
                 <p>Track your guidance appointments and consultations privately.</p>
             </div>
-            <a href="resources.php" clas="btn-look">Self-Help Hub</a>
+        
+            <a href="resources.php" class="btn-look">Self-Help Hub</a>
             <a href="book.php" class="btn-book">+ Book New Appointment</a>
         </div>
 

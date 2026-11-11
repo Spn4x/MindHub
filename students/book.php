@@ -84,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <h1>Book Counseling</h1>
                 <p>Request a private consultation with the Guidance Office.</p>
             </div>
-            <a href="dashboard.php" class="btn-logout" style="background:#64748b;">← Back</a>
+            <a href="dashboard.php" class="btn-logout" style="background:#122E24;">← Back</a>
         </div>
 
         <div class="table-container">
