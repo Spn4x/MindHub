@@ -161,7 +161,7 @@ $next_session = !empty($upcoming_approved) ? reset($upcoming_approved) : null;
         <?php if ($next_session): ?>
             <?php 
                 $reminderConcernClass = 'concern-' . str_replace(' ', '', $next_session['nature_of_concern']); 
-                $spotlight_link = $next_session['meeting_link'];
+                $spotlight_link = (string)($next_session['meeting_link'] ?? '');
                 $clean_spotlight_url = (strpos($spotlight_link, 'http://') === 0 || strpos($spotlight_link, 'https://') === 0) ? $spotlight_link : 'https://' . $spotlight_link;
             ?>
             <div class="spotlight-block">
@@ -173,7 +173,9 @@ $next_session = !empty($upcoming_approved) ? reset($upcoming_approved) : null;
                     Counselor: <strong><?= htmlspecialchars($next_session['counselor_fname'] . ' ' . $next_session['counselor_lname']) ?></strong> &bull; 
                     Concern: <span class="concern-text <?= $reminderConcernClass ?>"><?= htmlspecialchars($next_session['nature_of_concern']) ?></span> &bull; 
                     Mode: <?= htmlspecialchars($next_session['consultation_mode']) ?>
-                    <?php if ($next_session['consultation_mode'] === 'Online' && !empty($next_session['meeting_link'])): ?>
+                    <?php if ($next_session['consultation_mode'] === 'Face-to-Face'): ?>
+                        (Guidance Office at Main Hall)
+                    <?php elseif ($next_session['consultation_mode'] === 'Online' && !empty($next_session['meeting_link'])): ?>
                         &bull; <a href="<?= htmlspecialchars($clean_spotlight_url) ?>" target="_blank" style="color: var(--palette-blue); font-weight: 600; text-decoration: underline;">Open Meeting Room</a>
                     <?php endif; ?>
                 </div>
@@ -221,11 +223,15 @@ $next_session = !empty($upcoming_approved) ? reset($upcoming_approved) : null;
                                     <?= htmlspecialchars($row['consultation_mode']) ?>
                                     <?php if ($row['consultation_mode'] === 'Online' && !empty($row['meeting_link']) && $row['status'] === 'approved'): ?>
                                         <?php 
-                                            $link = $row['meeting_link'];
+                                            $link = (string)$row['meeting_link'];
                                             $clean_url = (strpos($link, 'http://') === 0 || strpos($link, 'https://') === 0) ? $link : 'https://' . $link;
                                         ?>
                                         <div style="margin-top: 3px;">
                                             <a href="<?= htmlspecialchars($clean_url) ?>" target="_blank" style="font-size: 11px; color: var(--palette-blue); font-weight: 600; text-decoration: underline;">Open Meeting Room</a>
+                                        </div>
+                                    <?php elseif ($row['consultation_mode'] === 'Face-to-Face'): ?>
+                                        <div style="font-size: 11px; color: #64748b; margin-top: 3px;">
+                                            Guidance Office at Main Hall
                                         </div>
                                     <?php endif; ?>
                                 </td>

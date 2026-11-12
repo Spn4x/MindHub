@@ -138,7 +138,8 @@ body.login-page .register-card {
 .navbar,
 .counselor-topbar,
 .schedule-row,
-.followup-header {
+.followup-header,
+.modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -188,6 +189,38 @@ textarea {
     line-height: 1.5;
 }
 
+.password-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-wrap input {
+    padding-right: 40px;
+}
+
+.btn-toggle-pw {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--palette-blue);
+}
+
+.btn-toggle-pw:hover {
+    color: var(--palette-navy);
+}
+
+.btn-toggle-pw svg {
+    width: 18px;
+    height: 18px;
+}
+
 .btn-submit,
 .btn-book,
 .btn-look,
@@ -195,7 +228,8 @@ textarea {
 .action-btn,
 .filter-btn,
 .btn-logout,
-.btn-counselor-logout {
+.btn-counselor-logout,
+.btn-modal-close {
     border-radius: 6px;
     font-weight: 600;
     cursor: pointer;
@@ -254,7 +288,7 @@ textarea {
 }
 
 .action-btn {
-    padding: 6px 12px;
+    padding: 5px 12px;
     font-size: 12px;
     color: #ffffff;
 }
@@ -281,6 +315,17 @@ textarea {
     background-color: #FAF0F0;
     border-color: var(--palette-pink);
     color: #803333;
+}
+
+.btn-modal-close {
+    background-color: #f1f5f9;
+    color: var(--palette-navy);
+    padding: 8px 16px;
+    font-size: 13px;
+}
+
+.btn-modal-close:hover {
+    background-color: #e2e8f0;
 }
 
 .alert-error,
@@ -593,8 +638,8 @@ textarea {
 
 .split-layout {
     display: grid;
-    grid-template-columns: 1.6fr 1fr;
-    gap: 20px;
+    grid-template-columns: 1.65fr 1fr;
+    gap: 24px;
     align-items: start;
 }
 
@@ -602,6 +647,100 @@ textarea {
     padding: 12px;
     margin-bottom: 12px;
     background: #f8fafc;
+}
+
+.schedule-row {
+    padding: 12px 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.schedule-row:last-child {
+    border-bottom: none;
+}
+
+.schedule-date {
+    font-weight: 700;
+    color: var(--palette-navy);
+    font-size: 14px;
+}
+
+.schedule-time {
+    font-size: 12px;
+    color: #64748b;
+    margin-top: 2px;
+}
+
+.schedule-student {
+    font-size: 13px;
+    font-weight: 600;
+    color: #334155;
+    margin-top: 4px;
+}
+
+.student-meta {
+    font-size: 12px;
+    color: #64748b;
+    margin-top: 3px;
+    line-height: 1.4;
+}
+
+.student-contact {
+    font-size: 12px;
+    color: #475569;
+    margin-top: 4px;
+}
+
+.student-contact span {
+    color: #94a3b8;
+    margin-right: 2px;
+}
+
+.mode-text {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--palette-blue);
+}
+
+.followup-card {
+    padding: 12px 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.followup-card:last-child {
+    border-bottom: none;
+}
+
+.followup-name {
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--palette-navy);
+}
+
+.followup-link {
+    font-size: 12px;
+    color: var(--matcha-dark);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.followup-link:hover {
+    text-decoration: underline;
+}
+
+.followup-summary {
+    font-size: 12px;
+    color: #64748b;
+    margin-top: 4px;
+    line-height: 1.4;
+}
+
+.visit-flag {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--palette-blue);
+    margin-left: 6px;
 }
 
 .mode-badge,
@@ -661,6 +800,73 @@ textarea {
 .visit-repeat {
     background-color: #EAE5E1;
     color: var(--palette-brown);
+}
+
+.note-view-link {
+    background: none;
+    border: none;
+    padding: 0;
+    margin-top: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--palette-blue);
+    cursor: pointer;
+    text-decoration: underline;
+    display: inline-block;
+}
+
+.note-view-link:hover {
+    color: var(--palette-navy);
+}
+
+dialog.modal-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 24px;
+    max-width: 480px;
+    width: 90%;
+    background: #ffffff;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+dialog.modal-card::backdrop {
+    background: rgba(15, 23, 42, 0.45);
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 16px;
+    color: var(--palette-navy);
+    font-weight: 700;
+}
+
+.modal-close-icon {
+    background: none;
+    border: none;
+    font-size: 20px;
+    line-height: 1;
+    color: #64748b;
+    cursor: pointer;
+    padding: 0;
+}
+
+.modal-close-icon:hover {
+    color: #0f172a;
+}
+
+.modal-body {
+    margin: 16px 0 20px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #334155;
+    white-space: pre-wrap;
+    word-break: break-word;
+    max-height: 50vh;
+    overflow-y: auto;
+}
+
+.modal-footer {
+    text-align: right;
 }
 
 .patient-strip {
@@ -785,6 +991,10 @@ textarea {
         flex-direction: column;
         align-items: flex-start;
         gap: 14px;
+    }
+
+    .welcome-header h1 {
+        font-size: 20px;
     }
 
     .welcome-header > div:last-child {

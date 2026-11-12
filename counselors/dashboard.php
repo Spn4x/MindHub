@@ -80,131 +80,6 @@ $followupWatchlist = $watchlistStmt->fetchAll();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Counselor Portal - MindHub</title>
     <link rel="stylesheet" href="../assets/css/style.css">
-    <style>
-        .split-layout {
-            display: grid;
-            grid-template-columns: 1.65fr 1fr;
-            gap: 24px;
-            align-items: start;
-        }
-        @media (max-width: 950px) {
-            .split-layout {
-                grid-template-columns: 1fr;
-            }
-        }
-        .action-btn {
-            padding: 5px 12px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 600;
-            border: none;
-            cursor: pointer;
-            color: #fff;
-        }
-        .btn-approve { background-color: var(--matcha-dark); }
-        .btn-approve:hover { background-color: var(--matcha-dark-hover); }
-        .btn-reject  { background-color: var(--palette-brown); }
-        .btn-reject:hover { background-color: #8c796b; }
-        
-        .student-meta {
-            font-size: 12px;
-            color: #64748b;
-            margin-top: 3px;
-            line-height: 1.4;
-        }
-        .student-contact {
-            font-size: 12px;
-            color: #475569;
-            margin-top: 4px;
-        }
-        .student-contact span {
-            color: #94a3b8;
-            margin-right: 2px;
-        }
-
-        .student-note-text {
-            font-size: 12px;
-            color: #64748b;
-            font-style: italic;
-            margin-top: 4px;
-            line-height: 1.4;
-        }
-
-        .schedule-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            padding: 12px 0;
-            border-bottom: 1px solid #f1f5f9;
-        }
-        .schedule-row:last-child {
-            border-bottom: none;
-        }
-        .schedule-date {
-            font-weight: 700;
-            color: var(--palette-navy);
-            font-size: 14px;
-        }
-        .schedule-time {
-            font-size: 12px;
-            color: #64748b;
-            margin-top: 2px;
-        }
-        .schedule-student {
-            font-size: 13px;
-            font-weight: 600;
-            color: #334155;
-            margin-top: 4px;
-        }
-
-        .mode-text {
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--palette-blue);
-        }
-
-        .followup-card {
-            padding: 12px 0;
-            border-bottom: 1px solid #f1f5f9;
-        }
-        .followup-card:last-child {
-            border-bottom: none;
-        }
-        .followup-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .followup-name {
-            font-weight: 700;
-            font-size: 13px;
-            color: var(--palette-navy);
-        }
-        .followup-link {
-            font-size: 12px;
-            color: var(--matcha-dark);
-            text-decoration: none;
-            font-weight: 600;
-        }
-        .followup-link:hover {
-            text-decoration: underline;
-        }
-        .followup-summary {
-            font-size: 12px;
-            color: #64748b;
-            margin-top: 4px;
-            line-height: 1.4;
-        }
-        
-        .visit-flag {
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--palette-blue);
-            margin-left: 6px;
-        }
-    </style>
 </head>
 <body class="dashboard-body">
 
@@ -276,9 +151,19 @@ $followupWatchlist = $watchlistStmt->fetchAll();
                                             <?= htmlspecialchars($row['nature_of_concern']) ?>
                                         </span>
                                         <div class="mode-text"><?= htmlspecialchars($row['consultation_mode']) ?></div>
+                                        <?php if ($row['consultation_mode'] === 'Face-to-Face'): ?>
+                                            <div style="font-size: 11px; color: #64748b; margin-top: 2px;">
+                                                Guidance Office at Main Hall
+                                            </div>
+                                        <?php endif; ?>
                                         <?php if (!empty($row['student_notes'])): ?>
-                                            <div class="student-note-text">
-                                                <?= htmlspecialchars($row['student_notes']) ?>
+                                            <div>
+                                                <button type="button" class="note-view-link" 
+                                                        data-name="<?= htmlspecialchars($row['first_name'] . ' ' . $row['last_name']) ?>"
+                                                        data-note="<?= htmlspecialchars($row['student_notes']) ?>"
+                                                        onclick="openNoteModal(this)">
+                                                    View note
+                                                </button>
                                             </div>
                                         <?php endif; ?>
                                     </td>
@@ -340,16 +225,16 @@ $followupWatchlist = $watchlistStmt->fetchAll();
                         </div>
                     <?php else: ?>
                         <?php foreach ($upcoming as $item): ?>
-                            <?php
-                                $counselor_link = $item['meeting_link'];
-                                $clean_counselor_url = (strpos($counselor_link, 'http://') === 0 || strpos($counselor_link, 'https://') === 0) ? $counselor_link : 'https://' . $counselor_link;
-                            ?>
                             <div class="schedule-row">
                                 <div>
                                     <div class="schedule-date"><?= date('M d, Y', strtotime($item['appointment_date'])) ?></div>
                                     <div class="schedule-time"><?= date('h:i A', strtotime($item['start_time'])) ?> - <?= date('h:i A', strtotime($item['end_time'])) ?></div>
                                     <div class="schedule-student"><?= htmlspecialchars($item['first_name'] . ' ' . $item['last_name']) ?></div>
                                     <?php if (!empty($item['meeting_link'])): ?>
+                                        <?php
+                                            $counselor_link = (string)$item['meeting_link'];
+                                            $clean_counselor_url = (strpos($counselor_link, 'http://') === 0 || strpos($counselor_link, 'https://') === 0) ? $counselor_link : 'https://' . $counselor_link;
+                                        ?>
                                         <div style="margin-top: 4px; font-size: 11px;">
                                             <a href="<?= htmlspecialchars($clean_counselor_url) ?>" target="_blank" style="color: var(--palette-blue); text-decoration: underline;">Open Meeting Link</a>
                                         </div>
@@ -357,6 +242,11 @@ $followupWatchlist = $watchlistStmt->fetchAll();
                                 </div>
                                 <div style="text-align: right;">
                                     <div class="mode-text"><?= htmlspecialchars($item['consultation_mode']) ?></div>
+                                    <?php if ($item['consultation_mode'] === 'Face-to-Face'): ?>
+                                        <div style="font-size: 11px; color: #64748b; margin-top: 2px;">
+                                            Guidance Office at Main Hall
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         <?php endforeach; ?>
@@ -395,6 +285,28 @@ $followupWatchlist = $watchlistStmt->fetchAll();
 
         </div>
     </div>
+
+    <dialog id="noteModal" class="modal-card">
+        <div class="modal-header">
+            <h3>Student Pre-Session Note</h3>
+            <button type="button" class="modal-close-icon" onclick="document.getElementById('noteModal').close()">&times;</button>
+        </div>
+        <div style="font-size: 12px; color: #64748b; margin-top: 4px;">
+            Submitted by: <strong id="modalStudentName" style="color: var(--palette-navy);"></strong>
+        </div>
+        <div class="modal-body" id="modalNoteText"></div>
+        <div class="modal-footer">
+            <button type="button" class="btn-modal-close" onclick="document.getElementById('noteModal').close()">Close</button>
+        </div>
+    </dialog>
+
+    <script>
+    function openNoteModal(btn) {
+        document.getElementById('modalStudentName').textContent = btn.getAttribute('data-name');
+        document.getElementById('modalNoteText').textContent = btn.getAttribute('data-note');
+        document.getElementById('noteModal').showModal();
+    }
+    </script>
 
 </body>
 </html>
