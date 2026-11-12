@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 require_once __DIR__ . '/config/db.php';
 
 if (empty($_SESSION['csrf_token'])) {
@@ -37,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($email) || empty($password)) {
         $error = "Please enter both your email and password.";
     } else {
-        $stmt = $pdo->prepare("select * from users where email = ?");
+        $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
         $stmt->execute([$email]);
         $user = $stmt->fetch();
 
@@ -66,11 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<<<<<<< HEAD
-    <title>Login -  MindHub</title>
-=======
     <title>Login - MindHub</title>
->>>>>>> 41825e85b5d0be17798885837f0d6d7f76154aa2
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body class="login-page">
@@ -85,12 +83,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <p>Student Counseling & Online Appointment System</p>
         </div>
 
-<<<<<<< HEAD
-<div class="register-card">
-    <div class="header">
-        <h2 class="brands">Mind<span>Hub</span></h2>
-        <p>Student Counseling & Online Appointment System</p>
-=======
         <?php if (!empty($error)): ?>
             <div class="alert-error">
                 <?= htmlspecialchars($error) ?>
@@ -131,7 +123,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="footer-link">
             Don't have an account yet? <a href="register.php">Register here</a>
         </div>
->>>>>>> 41825e85b5d0be17798885837f0d6d7f76154aa2
     </div>
 
     <script>
