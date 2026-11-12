@@ -2,7 +2,7 @@
 session_start();
 
 if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'], ['counselor', 'admin'])) {
-    header("Location: ../index.php");
+    header("Location: ../login.php");
     exit();
 }
 
@@ -52,7 +52,6 @@ $action_taken     = $existingNote['action_taken'] ?? '';
 $follow_up_needed = $existingNote['follow_up_needed'] ?? 0;
 
 $error = '';
-$success = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $case_summary     = trim($_POST['case_summary'] ?? '');
@@ -84,8 +83,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ");
         $updateApt->execute([$counselor_id, $appointment_id]);
 
-        $success = "Session notes saved! Appointment marked as Completed.";
-        $appointment['status'] = 'completed';
+        header("Location: dashboard.php");
+        exit();
     }
 }
 ?>
@@ -96,81 +95,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clinical Notes #<?= $appointment['appointment_id'] ?> - MindHub</title>
     <link rel="stylesheet" href="../assets/css/style.css">
-    <style>
-        .patient-strip {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 12px 16px;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
-            padding: 12px 16px;
-            margin-bottom: 14px;
-        }
-        .meta-col .meta-label {
-            font-size: 11px;
-            text-transform: uppercase;
-            font-weight: 700;
-            color: #64748b;
-            letter-spacing: 0.5px;
-            margin-bottom: 2px;
-        }
-        .meta-col .meta-val {
-            font-size: 13px;
-            font-weight: 600;
-            color: #0f172a;
-        }
-        .student-pre-note {
-            background: #fffbeb;
-            border-left: 3px solid #f59e0b;
-            padding: 8px 12px;
-            border-radius: 4px;
-            font-size: 12px;
-            color: #92400e;
-            margin-bottom: 14px;
-        }
-        .form-row {
-            margin-bottom: 12px;
-        }
-        .form-row label {
-            display: block;
-            font-size: 12px;
-            font-weight: 700;
-            color: #334155;
-            margin-bottom: 4px;
-        }
-        .form-row textarea {
-            width: 100%;
-            padding: 8px 10px;
-            border-radius: 6px;
-            border: 1px solid #cbd5e1;
-            font-size: 13px;
-            line-height: 1.5;
-            outline: none;
-            box-sizing: border-box;
-        }
-        .form-row textarea:focus {
-            border-color: #2563eb;
-        }
-        .form-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-top: 1px solid #f1f5f9;
-            padding-top: 14px;
-            margin-top: 14px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-    </style>
 </head>
 <body class="dashboard-body">
 
     <nav class="navbar">
-        <div class="brand">MindHub</div>
+        <a href="dashboard.php" class="brand">
+            <img src="../assets/images/logo.png" alt="MindHub Logo">
+            <span>Mind<span class="hub-accent">Hub</span></span>
+            <span class="brand-badge">Clinical Record</span>
+        </a>
         <div class="user-info">
             <span>Counselor: <strong><?= htmlspecialchars($_SESSION['name'] ?? 'Staff') ?></strong></span>
-            <a href="dashboard.php" class="btn-logout" style="background:#2563eb;">Console</a>
+            <a href="dashboard.php" class="btn-logout" style="background:#3e6a53; color:#fff; border:none;">Console</a>
             <a href="../logout.php" class="btn-logout">Logout</a>
         </div>
     </nav>
@@ -182,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <h1 style="font-size: 20px;">Consultation Notes & Case Summary</h1>
                 <p>Record confidential student findings, therapeutic actions, and follow-up requirements.</p>
             </div>
-            <a href="dashboard.php" class="btn-logout" style="background:#64748b;">← Back to Roster</a>
+            <a href="dashboard.php" class="btn-logout" style="background:#64748b; color:#fff; border:none;">← Back to Roster</a>
         </div>
 
         <div class="table-container" style="padding: 18px 20px;">
@@ -210,19 +146,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 </div>
             </div>
-
-            <?php if (!empty($appointment['student_notes'])): ?>
-                <div class="student-pre-note">
-                    <strong>Student Intake Note:</strong> "<?= htmlspecialchars($appointment['student_notes']) ?>"
-                </div>
-            <?php endif; ?>
-
             <?php if (!empty($error)): ?>
                 <div class="alert-error" style="margin-bottom: 12px;"><?= htmlspecialchars($error) ?></div>
-            <?php endif; ?>
-
-            <?php if (!empty($success)): ?>
-                <div class="alert-success" style="margin-bottom: 12px;"><?= htmlspecialchars($success) ?></div>
             <?php endif; ?>
 
             <form method="POST">

@@ -19,113 +19,79 @@ if (isset($_SESSION['user_id'])) {
     <link rel="stylesheet" href="assets/css/style.css">
     <style>
         body.landing-page {
-            background-color: #f8fafc;
-            display: block;
+            background-color: #ffffff;
             min-height: 100vh;
-            padding: 0;
+            display: flex;
+            flex-direction: column;
             margin: 0;
+            padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow-y: auto;
+            overflow-x: hidden;
         }
 
-        .landing-nav {
-            background: #ffffff;
-            border-bottom: 1px solid #e2e8f0;
-            padding: 16px 40px;
+        .landing-center {
+            flex: 1;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .landing-nav .brand {
-            font-size: 22px;
-            font-weight: 800;
-            color: #0f172a;
-            letter-spacing: -0.5px;
-        }
-
-        .landing-nav .brand span {
-            color: #809671;
-        }
-
-        .landing-nav .nav-actions {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
-
-        .btn-nav-login {
-            color: #1e293b;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 14px;
-            padding: 8px 16px;
-            border-radius: 20px;
-            transition: all 0.2s;
-        }
-
-        .btn-nav-login:hover {
-            background-color: #f1f5f9;
-        }
-
-        .btn-nav-register {
-            background-color: #809671;
-            color: #ffffff;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 14px;
-            padding: 9px 18px;
-            border-radius: 20px;
-            transition: all 0.2s;
-        }
-
-        .btn-nav-register:hover {
-            background-color: #809671;
-        }
-
-        .hero-section {
-            max-width: 1050px;
-            margin: 60px auto 40px;
-            padding: 0 20px;
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 40px 20px;
             text-align: center;
+        }
+
+        .brand-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .brand-header img {
+            height: 60px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .brand-header .brand-name {
+            font-size: 42px;
+            font-weight: 900;
+            color: #0f172a;
+            letter-spacing: -0.8px;
         }
 
         .hero-badge {
             display: inline-block;
-            background: #eff6ff;
             color: #809671;
-            border: 1px solid #dbeafe;
             padding: 6px 14px;
-            border-radius: 8px;
-            font-size: 13px;
+            font-size: 20px;
             font-weight: 700;
             margin-bottom: 20px;
         }
 
-        .hero-section h1 {
-            font-size: 44px;
+        .landing-center h1 {
+            font-size: 46px;
             line-height: 1.2;
             color: #0f172a;
             font-weight: 800;
-            margin-bottom: 18px;
+            margin: 0 0 16px;
             letter-spacing: -0.8px;
         }
 
-        .hero-section p {
-            font-size: 17px;
+        .landing-center p {
+            font-size: 16px;
             color: #64748b;
-            max-width: 680px;
-            margin: 0 auto 30px;
+            max-width: 620px;
+            margin: 0 0 32px;
             line-height: 1.6;
         }
 
         .hero-buttons {
             display: flex;
             justify-content: center;
-            gap: 16px;
+            gap: 14px;
             flex-wrap: wrap;
         }
 
@@ -134,15 +100,14 @@ if (isset($_SESSION['user_id'])) {
             color: #ffffff;
             text-decoration: none;
             font-weight: 700;
-            font-size: 16px;
-            padding: 14px 28px;
+            font-size: 15px;
+            padding: 12px 28px;
             border-radius: 20px;
             transition: all 0.2s;
         }
 
         .btn-hero-primary:hover {
-            background-color: #809671;
-            transform: translateY(-1px);
+            background-color: #275f02;
         }
 
         .btn-hero-secondary {
@@ -151,83 +116,36 @@ if (isset($_SESSION['user_id'])) {
             border: 1px solid #cbd5e1;
             text-decoration: none;
             font-weight: 700;
-            font-size: 16px;
-            padding: 14px 28px;
+            font-size: 15px;
+            padding: 12px 28px;
             border-radius: 20px;
             transition: all 0.2s;
         }
 
         .btn-hero-secondary:hover {
             background-color: #f8fafc;
-            border-color: #94a3b8;
-        }
-
-        .pillars-section {
-            max-width: 1100px;
-            margin: 60px auto 80px;
-            padding: 0 20px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 24px;
-        }
-
-        .pillar-card {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 28px 24px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
-            text-align: left;
-        }
-
-        .pillar-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 8px;
-            background: #eff6ff;
-            color: #809671;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            margin-bottom: 16px;
-        }
-
-        .pillar-card h3 {
-            font-size: 18px;
-            color: #0f172a;
-            margin-bottom: 8px;
-            font-weight: 700;
-        }
-
-        .pillar-card p {
-            font-size: 14px;
-            color: #64748b;
-            line-height: 1.5;
-            margin: 0;
         }
 
         .landing-footer {
+            margin-top: auto;
             border-top: 1px solid #e2e8f0;
             background: #ffffff;
-            padding: 24px;
+            padding: 18px 24px;
             text-align: center;
             color: #94a3b8;
             font-size: 13px;
+            width: 100%;
         }
     </style>
 </head>
 <body class="landing-page">
 
-    <nav class="landing-nav">
-        <div class="brand">Mind<span>Hub</span></div>
-        <div class="nav-actions">
-            <a href="login.php" class="btn-nav-login">Log In</a>
-            <a href="register.php" class="btn-nav-register">Create Account</a>
+    <div class="landing-center">
+        <div class="brand-header">
+            <img src="assets/images/logo.png" alt="MindHub Logo">
+            <span class="brand-name">Mind<span class="hub-accent">Hub</span></span>
         </div>
-    </nav>
 
-    <div class="hero-section">
         <div class="hero-badge">Student Guidance & Mental Wellness Support</div>
         <h1>Mind your studies, we'll mind your wellness</h1>
         <p>
@@ -236,14 +154,13 @@ if (isset($_SESSION['user_id'])) {
         </p>
 
         <div class="hero-buttons">
-            <a href="login.php" class="btn-hero-primary">Log In to Portal →</a>
+            <a href="login.php" class="btn-hero-primary">Log In to Portal</a>
             <a href="register.php" class="btn-hero-secondary">Student Registration</a>
         </div>
     </div>
 
-
     <footer class="landing-footer">
-        MindHub - Student Counseling & Online Appointment System &bull; Dedicated to Student Wellness
+        Mind<span class="hub-accent">Hub</span> &bull; Student Counseling & Online Appointment System
     </footer>
 
 </body>
