@@ -14,16 +14,6 @@ create table users (
   created_at timestamp default current_timestamp
 );
 
-create table counselor_schedules (
-  schedule_id int auto_increment primary key,
-  counselor_id int not null,
-  day_of_week enum("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday") not null,
-  start_time time not null,
-  end_time time not null,
-  is_active tinyint(1) default 1,
-  foreign key (counselor_id) references users(user_id)
-);
-
 create table appointments (
   appointment_id int auto_increment primary key,
   student_id int not null,
