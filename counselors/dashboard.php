@@ -44,7 +44,10 @@ $stmt = $pdo->query("
         u.email,
         u.contact_number,
         u.department_or_program,
-        (select count(*) from appointments a2 where a2.student_id = a.student_id and a2.status = 'completed') as visit_count
+        (select count(*) from appointments a2 
+        where a2.student_id = a.student_id 
+        and a2.status = 'completed'
+        ) as visit_count
     from appointments a
     join users u on a.student_id = u.user_id
     order by 

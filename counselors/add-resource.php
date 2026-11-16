@@ -67,6 +67,7 @@ $listStmt = $pdo->query("
     JOIN users u ON r.created_by = u.user_id
     ORDER BY r.created_at DESC
 ");
+
 $resources = $listStmt->fetchAll();
 ?>
 <!DOCTYPE html>
